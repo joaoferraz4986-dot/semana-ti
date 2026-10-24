@@ -4,7 +4,7 @@ rotulo: 10 · IA vs Humanos
 estado: ia
 camera: ia-a
 clima: estudio
-layout: direita
+layout: esquerda
 passos-modo: troca
 ---
 

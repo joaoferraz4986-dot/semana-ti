@@ -2,7 +2,7 @@
 titulo: Cada pergunta,|uma ferramenta
 rotulo: 06 · As ferramentas
 estado: ferr-devtools
-camera: celular-perto
+camera: camadas
 clima: estudio
 layout: direita
 passos-modo: troca

@@ -128,6 +128,13 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
       face.position.x = (x1 - x0) / 2 + 0.003;
       g.add(face);
     }
+    if (k === 0) {
+      // lado de fora do executável: só a etiqueta
+      const etiqueta = new THREE.Mesh(new THREE.PlaneGeometry(1.0, 0.5), new THREE.MeshBasicMaterial({ map: textura(512, 256, desenharRotuloBloco), transparent: true, depthWrite: false }));
+      etiqueta.rotation.y = Math.PI / 2;
+      etiqueta.position.set((x1 - x0) / 2 + 0.004, 0.15, 0.2);
+      g.add(etiqueta);
+    }
     sombra(g);
     bloco.add(g);
     fatias.push({ g, casa: g.position.clone(), largura: x1 - x0 });
@@ -319,18 +326,18 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
     visivel: () => P.presenca * clamp01((P.codigo - 1.5) * 2) * clamp01(1 - P.fatias * 3),
   });
   annotations.rotulo({
-    ancora: () => tmp.set(0.125, 1.02, 0.15).applyMatrix4(group.matrixWorld),
+    ancora: pontoEm(fatias[3].g, fatias[3].largura / 2 + 0.004, 0.27, 0.1),
     texto: 'preco virou param_1',
-    direcao: [1, -1],
+    direcao: [0.25, -1],
     comprimento: 6,
-    visivel: () => P.pistas * P.presenca * clamp01((P.fatias - 2.6) * 3),
+    visivel: () => P.pistas * P.presenca * clamp01((P.fatias - 2.6) * 3) * (P.fatias > 3.2 ? 0.0 + clamp01((P.fatias - 3.9) * 10) : 1),
   });
   annotations.rotulo({
-    ancora: () => tmp.set(0.125, 0.55, 0.75).applyMatrix4(group.matrixWorld),
+    ancora: pontoEm(fatias[3].g, fatias[3].largura / 2 + 0.004, -0.2, 0.75),
     texto: 'comentários: perdidos',
-    direcao: [1, 0.6],
-    comprimento: 6,
-    visivel: () => P.pistas * P.presenca * clamp01((P.fatias - 2.6) * 3),
+    direcao: [0.25, 1],
+    comprimento: 5,
+    visivel: () => P.pistas * P.presenca * clamp01((P.fatias - 2.6) * 3) * (P.fatias > 3.2 ? 0.0 + clamp01((P.fatias - 3.9) * 10) : 1),
   });
   annotations.rotulo({
     ancora: pontoEm(servidor, 0, 2.6, 0),
@@ -361,13 +368,16 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
       const e = clamp01(P.fatias - k);
       const a = suave(Math.min(1, e * 1.8)); // desliza para fora
       const b = suave((e - 0.45) / 0.55); // vai para a fila
-      const destinoX = 2.1 + (3 - k) * 0.62;
+      // destino: placas de "museu" lado a lado atrás do bloco, viradas para a frente
+      const destinoX = 2.5 + (3 - k) * 1.3;
+      const esc = 1 - 0.42 * b;
       f.g.position.set(
         f.casa.x + a * 0.9 + b * (destinoX - f.casa.x - 0.9),
-        f.casa.y + Math.sin(b * Math.PI) * 0.35,
-        f.casa.z - b * 1.5,
+        lerp(f.casa.y, f.casa.y * esc, b) + Math.sin(b * Math.PI) * 0.45,
+        f.casa.z - b * 2.5,
       );
-      f.g.rotation.y = -b * 0.35;
+      f.g.rotation.y = (-Math.PI / 2) * b;
+      f.g.scale.setScalar(esc);
     }
     rotuloMat.opacity = P.rotuloBloco * 0.95;
     rotulo.visible = rotuloMat.opacity > 0.01;

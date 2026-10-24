@@ -74,8 +74,8 @@ export const ESTADOS = {
 // Posições: executável no centro (x = 0), celular em x ≈ -5,4, servidor em x ≈ -8,4.
 // pos = onde a câmera está · alvo = para onde olha · fov = abertura (menor = mais zoom)
 export const CAMERAS = {
-  'bloco-escuro': { pos: [3.4, 1.5, 8.6], alvo: [0.1, 0.8, 0], fov: 25 },
-  'bloco-perto': { pos: [2.6, 2.1, 6.2], alvo: [0.1, 0.8, 0], fov: 26 },
+  'bloco-escuro': { pos: [-2.4, 1.5, 7.8], alvo: [0.3, 0.8, 0], fov: 25 },
+  'bloco-perto': { pos: [-1.4, 2.0, 5.8], alvo: [0.3, 0.8, 0], fov: 26 },
   'bloco-estudio': { pos: [4.2, 3.2, 7.6], alvo: [0.3, 0.75, 0], fov: 30 },
 
   celular: { pos: [-3.0, 2.0, 6.8], alvo: [-5.4, 1.05, 0.4], fov: 30 },
@@ -103,11 +103,11 @@ export const CAMERAS = {
   'api-longe': { pos: [-3.6, 4.2, 11.4], alvo: [-6.8, 0.8, 0.3], fov: 30 },
 
   geral: { pos: [0.6, 5.0, 13.4], alvo: [-4.1, 0.8, 0], fov: 30 },
-  'ia-a': { pos: [-2.4, 3.2, 8.2], alvo: [1.4, 0.8, -0.6], fov: 30 },
-  'ia-b': { pos: [-1.2, 2.4, 6.4], alvo: [1.2, 0.8, -0.8], fov: 30 },
-  'ia-c': { pos: [4.2, 2.2, 4.0], alvo: [0.0, 0.8, -0.2], fov: 30 },
-  'ia-d': { pos: [-3.6, 4.2, 10.4], alvo: [0.8, 0.8, -0.6], fov: 30 },
+  'ia-a': { pos: [4.2, 3.6, 11.0], alvo: [4.2, 0.6, -1.8], fov: 30 },
+  'ia-b': { pos: [5.4, 2.6, 6.6], alvo: [4.4, 0.5, -2.2], fov: 30 },
+  'ia-c': { pos: [2.4, 1.9, 3.6], alvo: [2.6, 0.5, -2.3], fov: 30 },
+  'ia-d': { pos: [0.4, 5.0, 14.6], alvo: [0.6, 0.7, -1.0], fov: 30 },
 
-  'final-holofote': { pos: [0.8, 2.4, 10.2], alvo: [-2.6, 0.9, 0.2], fov: 28 },
-  final: { pos: [-2.0, 3.2, 13.2], alvo: [-2.6, 0.9, 0.2], fov: 30 },
+  'final-holofote': { pos: [-1.6, 3.0, 10.8], alvo: [-2.6, 0.7, 0.2], fov: 30 },
+  final: { pos: [-2.4, 4.0, 14.4], alvo: [-2.6, 0.7, 0.2], fov: 30 },
 };

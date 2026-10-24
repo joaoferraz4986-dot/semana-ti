@@ -58,6 +58,20 @@
 .layout-topo {
   align-content: start;
 }
+/* rodape: texto largo embaixo (títulos longos), objeto em cima */
+.layout-rodape {
+  align-content: end;
+}
+.layout-rodape .capitulo__caixa {
+  grid-column: 1 / span 11;
+  gap: calc(var(--u) * 2.2);
+}
+.layout-rodape .capitulo__corpo {
+  max-width: none;
+}
+.layout-rodape .capitulo__titulo {
+  font-size: calc(var(--u) * 8.4);
+}
 .layout-topo .capitulo__caixa {
   grid-column: 1 / span 12;
   display: grid;

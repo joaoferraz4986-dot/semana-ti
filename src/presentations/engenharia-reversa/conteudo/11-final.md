@@ -1,10 +1,10 @@
 ---
-titulo: Entender o que já existe|é o primeiro passo para|criar o que vem depois
+titulo: Entender o que já existe é o primeiro passo|para criar o que vem depois
 rotulo: 11 · Final
 estado: final-junto
 camera: final-holofote
 clima: holofote
-layout: esquerda
+layout: rodape
 ---
 
 Observar. Analisar. Documentar. Com autorização.
