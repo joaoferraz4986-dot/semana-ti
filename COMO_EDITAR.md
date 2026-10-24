@@ -119,7 +119,7 @@ Por padrão, o texto dos passos **soma** (o anterior continua na tela). Para cad
 | Campo | Valores |
 | --- | --- |
 | `clima` | `estudio` (fundo claro) · `holofote` (fundo escuro, luz de museu, que segue o ponto para onde a câmera olha) |
-| `layout` | `esquerda` (texto à esquerda, objeto à direita) · `direita` · `inferior` (texto embaixo) · `rodape` (título longo embaixo, objeto em cima) · `topo` · `centro` |
+| `layout` | `esquerda` (texto à esquerda, objeto à direita) · `direita` · `inferior` (texto embaixo) · `rodape` (título longo embaixo, objeto em cima) · `painel` (texto estreito à direita, painel da cena à esquerda) · `topo` · `centro` |
 | `destaque` | `sim` deixa o título enorme (abertura) |
 | `estado` | o que o 3D mostra (lista abaixo) |
 | `camera` | de onde se vê (lista abaixo) |
@@ -218,7 +218,7 @@ Uma cena é uma função que recebe o contexto do motor e devolve um objeto com 
 | `cameraPadrao` | não | câmera usada se o capítulo não disser |
 | `apply(params)` | sim | chamado **todo quadro** com os parâmetros já interpolados (inclui `presenca`: 1 quando a cena está ativa) |
 | `update(dt, tempo)` | não | animações contínuas (ex.: contas correndo no cabo) |
-| `onStop(parada)` | não | avisado quando muda a parada |
+| `onStop(parada)` | não | avisado quando muda a parada. `parada.attrs` traz todos os campos do cabeçalho e dos `<!-- passo ... -->` (herdados), útil para configurações próprias, como a demo de redes neurais |
 | `reset()` | não | tecla R |
 | `dispose()` | não | liberar memória |
 
@@ -280,7 +280,45 @@ annotations.rotulo({
 
 ---
 
-## 9. Conferir antes de apresentar
+## 9. Redes neurais: mexer na demo ao vivo
+
+A demo (capítulo 6) é uma rede neural **de verdade** treinando no navegador. Ela é configurada **no próprio `.md`** (`conteudo/06-demo.md`), passo a passo, sem tocar em código:
+
+```markdown
+---
+demo-dados: espiral        # conjunto inicial
+demo-treinar: nao          # no 1º passo só mostra os pontos
+demo-ocultas: 1
+demo-neuronios: 2
+---
+
+<!-- passo demo-treinar=sim -->
+**2 neurônios**: poucos demais.
+
+<!-- passo demo-neuronios=8 -->
+**8 neurônios**: a fronteira começa a curvar.
+```
+
+| Atributo | Valores |
+| --- | --- |
+| `demo-dados` | `espiral`, `circulos`, `xor`, `grupos` · vários separados por vírgula = montagem (ex.: `circulos,xor`) |
+| `demo-ocultas` | camadas ocultas, de 1 a 3 |
+| `demo-neuronios` | neurônios por camada oculta, de 1 a 8 |
+| `demo-taxa` | taxa de aprendizado (padrão 0,03) |
+| `demo-epocas` | até quantas épocas treinar (padrão 400) |
+| `demo-treinar` | `nao` só mostra os pontos |
+| `demo-semente` | número da "sorte" fixa (padrão 3). Mude se quiser outro resultado, sempre repetível |
+
+Cada passo **recomeça o treino do zero com a mesma semente**: voltar e avançar dá exatamente o mesmo resultado. Antes de apresentar, ensaie e anote os números no roteiro.
+
+Outros arquivos da demo (para quem quiser ler o código):
+- `demo/mlp.js`: a rede (passo para frente, retropropagação, ajuste dos pesos), comentada em português.
+- `demo/dados.js`: como cada conjunto de pontos é gerado.
+- `demo/demo.js` e `demo/demo.css`: o painel (mapa, números, gráfico do erro) e as cores terracota/cobalto.
+
+Os exemplos de aplicação do capítulo 9 (o que entra e o que sai da rede) ficam em `cenas/redes/exemplo.js` (`APLICACOES`).
+
+## 10. Conferir antes de apresentar
 
 1. `npm run build` precisa terminar sem erro.
 2. `npm run apresentar` e passe por todas as paradas com o passador (PageDown/PageUp).

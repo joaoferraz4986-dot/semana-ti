@@ -3,7 +3,7 @@
 Apresentações 3D animadas, em português, feitas para rodar numa TV grande, **sem internet**.
 
 - **Engenharia reversa** (de software): pronta (11 capítulos, 47 paradas, ~19 min de fala).
-- **Redes neurais**: em preparação (vai usar o mesmo motor).
+- **Redes neurais**: pronta (11 capítulos, 47 paradas, ~19 min de fala), com uma **rede neural de verdade treinando ao vivo** no capítulo 6.
 
 Tudo roda no navegador (Chrome ou Edge). O 3D é feito com Three.js, as animações com GSAP e a rolagem suave com Lenis. Não depende de nenhum site externo: fontes e bibliotecas vão junto no build.
 
@@ -21,14 +21,14 @@ npm install          # uma vez só (precisa de internet nessa hora)
 npm run dev          # modo de edição: abre em http://localhost:5173 e recarrega ao salvar
 npm run build        # gera a versão final em dist/
 npm run apresentar   # build + abre a versão final em http://localhost:4173 (use este no dia)
-npm run build:arquivo  # gera dist-arquivo/engenharia-reversa.html (um arquivo só, duplo clique)
+npm run build:arquivo  # gera dist-arquivo/engenharia-reversa.html e dist-arquivo/redes-neurais.html (um arquivo só cada, duplo clique)
 ```
 
 ## Como abrir no PC da TV (offline)
 
 Escolha **uma** das opções, da mais simples para a mais completa:
 
-1. **Duplo clique (sem instalar nada)**: rode `npm run build:arquivo` no seu computador e copie `dist-arquivo/engenharia-reversa.html` para um pendrive. No PC da TV, dê duplo clique no arquivo, que abre direto no navegador. O arquivo (~1,1 MB) já leva fontes, 3D e conteúdo. Testado via `file://` no Chrome.
+1. **Duplo clique (sem instalar nada)**: rode `npm run build:arquivo` no seu computador e copie `dist-arquivo/engenharia-reversa.html` e/ou `dist-arquivo/redes-neurais.html` para um pendrive. No PC da TV, dê duplo clique no arquivo, que abre direto no navegador. O arquivo (~1,1 MB) já leva fontes, 3D e conteúdo. Testado via `file://` no Chrome.
 2. **Pasta `dist/` + servidor local**: copie o projeto inteiro (com `node_modules`) e rode `npm run apresentar`. Abre `http://localhost:4173`, com a página inicial para escolher a apresentação.
 3. **Pasta `dist/` em qualquer servidor estático**: os caminhos são relativos, então funciona em qualquer pasta (`npx serve dist`, `python -m http.server` dentro de `dist/` etc.).
 
@@ -65,9 +65,9 @@ Dica: aperte `F` para tela cheia e confira o som e o brilho da TV antes de come�
 
 ```
 index.html                      página inicial (escolher apresentação)
-engenharia-reversa/
+engenharia-reversa/ e redes-neurais/
   index.html                    página da apresentação
-  roteiro_apresentacao.md       roteiro de fala
+  roteiro_apresentacao.md       roteiro de fala (com o guia da demo, no caso de redes neurais)
   referencias.md                fontes
 src/
   engine/                       MOTOR (serve para qualquer apresentação)
@@ -86,6 +86,10 @@ src/
       config.js                 título, cor de destaque, cenas
       conteudo/*.md             UM ARQUIVO POR CAPÍTULO (é aqui que se edita o texto)
       cenas/software/           o executável, o app e o servidor (estados, câmeras, texturas, exemplo de código)
+    redes-neurais/
+      conteudo/*.md             capítulos (a configuração da demo fica no 06-demo.md)
+      demo/                     a rede neural de verdade (mlp.js), os dados (dados.js) e o painel (demo.js)
+      cenas/redes/              neurônio, redes 3D, dupla humano/máquina (estados.js = estados e câmeras)
   hub/                          página inicial
 scripts/build-arquivo.mjs       gera a versão de arquivo único
 ```
