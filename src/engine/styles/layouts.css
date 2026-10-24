@@ -82,6 +82,16 @@
 .layout-topo {
   align-content: start;
 }
+/* painel: texto estreito à direita; à esquerda fica um painel da cena (ex.: demo ao vivo), o 3D no meio */
+.layout-painel .capitulo__caixa {
+  grid-column: 9 / span 4;
+}
+.layout-painel .capitulo__titulo {
+  font-size: calc(var(--u) * 7.6);
+}
+.layout-painel::before {
+  background: linear-gradient(270deg, var(--veu) 0%, var(--veu-meio) 26%, transparent 38%);
+}
 /* rodape: texto largo embaixo (títulos longos), objeto em cima */
 .layout-rodape {
   align-content: end;

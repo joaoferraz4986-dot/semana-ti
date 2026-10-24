@@ -18,6 +18,7 @@ export function montarParadas(capitulos, padrao = {}) {
   capitulos.forEach((cap, ci) => {
     const d = cap.dados;
     let herdado = {
+      ...d, // todos os campos do cabeçalho ficam disponíveis para a cena (p.attrs)
       cena: d.cena || padrao.cena,
       estado: d.estado || 'padrao',
       camera: d.camera || null,
@@ -36,6 +37,7 @@ export function montarParadas(capitulos, padrao = {}) {
         camera: herdado.camera,
         clima: CLIMA[herdado.clima] ?? 0,
         layout: herdado.layout,
+        attrs: { ...herdado }, // atributos livres (ex.: configuração da demo), herdados passo a passo
       });
     });
     cap.nParadas = cap.passos.length;

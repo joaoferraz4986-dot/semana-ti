@@ -219,7 +219,8 @@ export function iniciarApresentacao(config) {
   // ---------- laço principal ----------
   let anterior = performance.now();
   const quadro = (agora) => {
-    const dt = Math.min(0.1, (agora - anterior) / 1000);
+    // (o primeiro quadro pode vir com horário anterior ao início: nunca deixa dt negativo)
+    const dt = Math.max(0, Math.min(0.1, (agora - anterior) / 1000));
     anterior = agora;
     nav.update(agora);
     director.update(nav.t, dt);

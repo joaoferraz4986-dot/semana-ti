@@ -12,6 +12,7 @@ export const DESLOCAMENTOS = {
   inferior: { x: 0, y: 0.17 },
   topo: { x: 0, y: -0.14 },
   rodape: { x: 0, y: 0.2 },
+  painel: { x: 0.02, y: 0 },
 };
 
 const suave = (f) => f * f * (3 - 2 * f);

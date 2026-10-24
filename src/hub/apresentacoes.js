@@ -13,6 +13,6 @@ export default [
     titulo: 'Redes neurais',
     resumo: 'Como uma máquina aprende a partir de exemplos.',
     acento: '#2f4fd8',
-    pronta: false,
+    pronta: true,
   },
 ];

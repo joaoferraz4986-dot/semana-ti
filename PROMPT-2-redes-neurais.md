@@ -75,10 +75,18 @@ A real neural network training live, in the same studio visual language (do NOT 
 - **Plot**: the points plus a live **decision-boundary map** (soft terracotta ↔ cobalt tint) evolving as it trains. Render it so it fits the studio aesthetic — e.g. as a printed panel/board standing in the 3D scene, or a clean editorial canvas overlay. Crisp and readable on a TV.
 - **Network view**: the same network in 3D next to it (nodes = ceramic spheres, connections = cables), with cable thickness/brightness bound to the **real current weights** and pulses flowing while training.
 - **Live numbers**: época and erro (loss) with a small elegant line chart. All values are real computed values.
-- **Controls** (large, tactile, physical-feeling buttons/sliders, Portuguese labels): Treinar / Pausar, Reiniciar, Conjunto de dados, Neurônios por camada (1–8), Camadas ocultas (1–3), Taxa de aprendizado (baixa/média/alta).
-- Smooth on a weak PC: train a few batches per frame, throttle the heatmap resolution, never block the main thread.
-- While a demo control is focused, arrow keys adjust the control; PageUp/PageDown (clicker) still navigate.
-- Teaching script hook (put in the roteiro): start "Espiral" with 1 hidden layer and 2 neurons → it fails; increase neurons/layers → it succeeds. Explain why.
+- **No buttons, sliders or clickable controls.** The demo is driven ONLY by presentation navigation (arrows / clicker / scroll), one stop per beat, like the rest of the presentation. Each stop sets a scripted configuration and starts training automatically:
+  1. Dataset "Espiral" appears (points only). "A rede precisa separar laranja de azul."
+  2. 1 hidden layer, 2 neurons → trains live for a few seconds → visibly fails (boundary can't follow the spiral, error stays high).
+  3. More neurons (e.g. 8) → trains live → improves.
+  4. 2–3 hidden layers → trains live → solves the spiral, error drops near zero.
+  5. Quick montage: the same network solving "Círculos" and "XOR".
+  Going backward restores that stop's configuration and retrains from a fixed seed, so it behaves the same every time (use a seeded PRNG so the presenter knows what will happen).
+- The configuration of each stop lives in the chapter's Markdown frontmatter (or a small, documented config file) so students can change datasets/neurons per step without touching code.
+- Teaching script (put in the roteiro, per step): explain why few neurons fail and more neurons/layers succeed.
+
+### Interaction rule for the whole presentation
+No clickable or hoverable elements anywhere. Every navigation stop = one visible, choreographed animated change illustrating one idea ("uma passada para cada explicação"). Use 2–5 internal steps per chapter. If the engine still contains click/hover UI from earlier versions, don't use it in this presentation.
 
 ---
 
@@ -93,7 +101,7 @@ A real neural network training live, in the same studio visual language (do NOT 
 ## 6. BUILD ORDER (commit after each stage)
 
 1. Register the presentation (config, hub link, accent colors), create all chapter Markdown files with final text and placeholder visuals. Run it.
-2. Live demo (MLP, datasets, boundary map, chart, controls). Verify it really learns (spiral solvable with enough neurons).
+2. Live demo (MLP, datasets, boundary map, chart, scripted per-step configurations with seeded PRNG). Verify it really learns (spiral solvable with enough neurons).
 3. Artificial network scene + forward/backprop visuals (chapters 4–5) + demo network view bound to real weights.
 4. Biological neuron + morph to artificial neuron (chapters 2–3), opening and final.
 5. Brain vs machine, "o que a rede vê", applications.
@@ -106,7 +114,7 @@ A real neural network training live, in the same studio visual language (do NOT 
 
 - Dev + production build run with no console errors and no external requests.
 - If browser automation is available: one pass through all stops forward/backward with PageDown/PageUp and arrows; max ~8 screenshots at 1920×1080 (opening, neuron, network, backprop, demo while training, brain vs machine, final). Judge honestly against the banned list and TV readability; fix real problems; stop.
-- Test the demo repeatedly: train, pause, reset, change dataset mid-training, change neurons/layers.
+- Test the demo by navigating its steps forward and backward repeatedly: each step must reproduce the same result.
 - Re-check that Engenharia Reversa still loads and navigates if you touched the engine.
 - Never claim a test you didn't run.
 
