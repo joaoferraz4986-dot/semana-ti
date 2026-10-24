@@ -1,0 +1,65 @@
+/*
+  TOKENS DE DESIGN — mude aqui cores, fontes e escala de texto.
+  Tudo é medido em "u": 1u = 1% da altura de uma tela 16:9.
+  Assim o texto fica proporcional em qualquer TV (1080p ou 4K).
+*/
+@import '@fontsource/instrument-serif/latin-400.css';
+@import '@fontsource/instrument-serif/latin-400-italic.css';
+@import '@fontsource/instrument-sans/latin-400.css';
+@import '@fontsource/instrument-sans/latin-500.css';
+@import '@fontsource/instrument-sans/latin-600.css';
+
+:root {
+  /* escala */
+  --u: min(1vh, 0.5625vw);
+
+  /* paleta fixa */
+  --areia: #ece8e1;
+  --areia-2: #e3ddd2;
+  --tinta: #191714;
+  --tinta-2: #6e685f;
+  --carvao: #151311;
+  --marfim: #efe9df;
+  --marfim-2: #a59c8f;
+
+  /* cor de destaque — cada apresentação sobrescreve via config.js (acento) */
+  --acento: #e4572e;
+
+  /* cores vivas: o Moods.js interpola estas variáveis entre "estúdio" e "holofote" */
+  --fundo: var(--areia);
+  --texto: var(--tinta);
+  --texto-2: var(--tinta-2);
+  --traco: var(--tinta);
+
+  /* tipografia */
+  --fonte-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --fonte-texto: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
+
+  --t-display: calc(var(--u) * 15);
+  --t-titulo: calc(var(--u) * 10.5);
+  --t-corpo: calc(var(--u) * 3.4);
+  --t-menor: calc(var(--u) * 2.4);
+  --t-rotulo: calc(var(--u) * 1.75);
+
+  /* espaço e grade */
+  --margem-x: calc(var(--u) * 7.5);
+  --margem-y: calc(var(--u) * 7);
+  --calha: calc(var(--u) * 2.4);
+
+  /* movimento */
+  --ease-saida: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-fluida: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* telas em retrato (celular): a unidade passa a ser relativa à largura */
+@media (max-aspect-ratio: 1/1) {
+  :root {
+    --u: 1.15vw;
+    --t-display: calc(var(--u) * 13);
+    --t-titulo: calc(var(--u) * 9.5);
+    --t-corpo: calc(var(--u) * 4.2);
+    --t-menor: calc(var(--u) * 3.4);
+    --t-rotulo: calc(var(--u) * 2.8);
+    --margem-x: 16px;
+  }
+}

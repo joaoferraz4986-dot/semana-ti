@@ -1,0 +1,35 @@
+// Painel de atalhos (tecla H).
+const ATALHOS = [
+  ['→ ↓ Espaço PageDown', 'Próxima parada'],
+  ['← ↑ PageUp', 'Parada anterior'],
+  ['Home / End', 'Início / fim'],
+  ['F', 'Tela cheia'],
+  ['Q', 'Qualidade gráfica (Alta, Média, Baixa)'],
+  ['R', 'Recentralizar a câmera do capítulo'],
+  ['H', 'Mostrar ou esconder esta ajuda'],
+  ['Esc', 'Fechar ajuda / soltar peça selecionada'],
+];
+
+export class Help {
+  constructor(container, titulo) {
+    const el = document.createElement('div');
+    el.className = 'ui-ajuda';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.setAttribute('aria-label', 'Atalhos de teclado');
+    el.innerHTML = `
+      <div class="ui-ajuda__folha">
+        <h2>Atalhos</h2>
+        <dl>${ATALHOS.map(([k, d]) => `<dt>${k}</dt><dd>${d}</dd>`).join('')}</dl>
+        <p>${titulo}. O passador de slides (PageUp/PageDown) funciona direto. Rolar com o mouse também funciona. Se a animação travar, aperte Q.</p>
+      </div>`;
+    el.addEventListener('click', () => this.alternar(false));
+    container.appendChild(el);
+    this.el = el;
+    this.aberta = false;
+  }
+  alternar(forcar) {
+    this.aberta = forcar ?? !this.aberta;
+    this.el.classList.toggle('visivel', this.aberta);
+  }
+}
