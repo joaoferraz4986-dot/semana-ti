@@ -2,10 +2,74 @@
 
 Apresentações 3D animadas, em português, feitas para rodar numa TV grande, **sem internet**.
 
-- **Engenharia reversa** (de software): pronta (11 capítulos, 47 paradas, ~19 min de fala).
-- **Redes neurais**: pronta (11 capítulos, 47 paradas, ~19 min de fala), com uma **rede neural de verdade treinando ao vivo** no capítulo 6.
+### ▶ Ver online: **[sousa7tz.github.io/semana-ti](https://sousa7tz.github.io/semana-ti/)**
 
-Tudo roda no navegador (Chrome ou Edge). O 3D é feito com Three.js, as animações com GSAP e a rolagem suave com Lenis. Não depende de nenhum site externo: fontes e bibliotecas vão junto no build.
+| Apresentação | Link direto | O que tem |
+| --- | --- | --- |
+| **Engenharia reversa** (de software) | [abrir](https://sousa7tz.github.io/semana-ti/engenharia-reversa/) | 11 capítulos, 47 paradas, ~19 min |
+| **Redes neurais** | [abrir](https://sousa7tz.github.io/semana-ti/redes-neurais/) | 11 capítulos, 47 paradas, ~19 min, com uma **rede neural de verdade treinando ao vivo** no capítulo 6 |
+
+Use as setas do teclado (ou o passador de slides) para avançar. Aperte `H` para ver os atalhos. Funciona melhor no computador (Chrome ou Edge).
+
+Tudo roda no navegador. O 3D é feito com Three.js, as animações com GSAP e a rolagem suave com Lenis. Não depende de nenhum site externo: fontes e bibliotecas vão junto no build.
+
+---
+
+## Quero editar: passo a passo
+
+**1. Instale uma vez:** [Node.js](https://nodejs.org/) (versão LTS) e [Git](https://git-scm.com/). Um editor de código ajuda: [VS Code](https://code.visualstudio.com/).
+
+**2. Baixe o projeto** (no terminal):
+
+```bash
+git clone https://github.com/sousa7tz/semana-ti.git
+cd semana-ti
+npm install
+```
+
+Não usa Git? No GitHub, clique em **Code → Download ZIP**, descompacte e rode `npm install` dentro da pasta.
+
+**3. Abra no modo de edição:**
+
+```bash
+npm run dev
+```
+
+Abra `http://localhost:5173`. Cada vez que você salva um arquivo, a página atualiza sozinha.
+
+**4. Edite.** Os textos são arquivos Markdown simples, um por capítulo:
+
+| Quero mudar… | Arquivo |
+| --- | --- |
+| Texto de um capítulo | `src/presentations/<apresentação>/conteudo/NN-nome.md` |
+| O que falar em cada clique | `<apresentação>/roteiro_apresentacao.md` |
+| A demo da rede neural (neurônios, dados) | `src/presentations/redes-neurais/conteudo/06-demo.md` |
+| Cores, fontes, tamanhos | `src/engine/styles/tokens.css` |
+
+Exemplo de capítulo:
+
+```markdown
+---
+titulo: Do objeto|ao conhecimento
+estado: celular-ligado
+camera: celular
+---
+
+Primeiro texto.
+
+<!-- passo -->
+Aparece no próximo clique.
+```
+
+O guia completo, com passos animados, câmeras, como criar capítulos e apresentações novas, está no **[COMO_EDITAR.md](COMO_EDITAR.md)**.
+
+**5. Envie a sua mudança:**
+- **Faz parte do grupo (tem acesso ao repositório)?** `git add .` → `git commit -m "o que mudou"` → `git push`.
+- **Não tem acesso?** Faça um **Fork** no GitHub, mande as mudanças para o seu fork e abra um **Pull Request**. Ou mande a mudança para o grupo, que alguém aplica.
+
+**6. Atualizar o site online** (quem tem acesso): `npm run publicar`. Em 1 ou 2 minutos o link acima mostra a versão nova.
+
+> Antes de apresentar, sempre rode `npm run build` (precisa terminar sem erro) e passe por todos os capítulos com o passador.
 
 ---
 
@@ -22,6 +86,7 @@ npm run dev          # modo de edição: abre em http://localhost:5173 e recarre
 npm run build        # gera a versão final em dist/
 npm run apresentar   # build + abre a versão final em http://localhost:4173 (use este no dia)
 npm run build:arquivo  # gera dist-arquivo/engenharia-reversa.html e dist-arquivo/redes-neurais.html (um arquivo só cada, duplo clique)
+npm run publicar     # build + envia para o GitHub Pages (branch gh-pages)
 ```
 
 ## Como abrir no PC da TV (offline)
@@ -92,6 +157,11 @@ src/
       cenas/redes/              neurônio, redes 3D, dupla humano/máquina (estados.js = estados e câmeras)
   hub/                          página inicial
 scripts/build-arquivo.mjs       gera a versão de arquivo único
+scripts/publicar.mjs            publica no GitHub Pages
 ```
+
+---
+
+Feito para a Semana de TI · Desenvolvimento de Sistemas.
 
 Para editar textos, capítulos, cores ou criar uma apresentação nova, leia **[COMO_EDITAR.md](COMO_EDITAR.md)**.
