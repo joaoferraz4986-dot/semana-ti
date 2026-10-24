@@ -187,10 +187,29 @@ export class Annotations {
 
   #rotulo(it, vis, camera, w, h, u, fonte) {
     const a = this.#projetar(it.ancora(), camera, w, h, it.a);
-    const [dx, dy] = it.direcao;
+    let [dx, dy] = it.direcao;
     const n = Math.hypot(dx, dy) || 1;
     const L = it.comprimento * u;
-    const p1 = { x: a.x + (dx / n) * L, y: a.y + (dy / n) * L };
+    // mede o texto (com cache) para garantir que o rótulo caiba na tela
+    const texto = typeof it.texto === 'function' ? it.texto() : it.texto;
+    const tam = fonte * 1.12;
+    if (it.medida?.texto !== texto || it.medida?.tam !== tam) {
+      it.txt.textContent = texto;
+      it.txt.setAttribute('font-size', tam);
+      let larg = 0;
+      try {
+        larg = it.txt.getComputedTextLength();
+      } catch {
+        larg = texto.length * tam * 0.5;
+      }
+      it.medida = { texto, tam, larg };
+    }
+    const margem = u * 3;
+    const ocupa = L * (Math.abs(dx) / n) + u * 5 + it.medida.larg; // linha + ombro + texto
+    // se o rótulo sairia da tela por um lado, ele passa para o outro lado
+    if (dx < 0 && a.x - ocupa < margem && a.x + ocupa < w - margem) dx = -dx;
+    else if (dx >= 0 && a.x + ocupa > w - margem && a.x - ocupa > margem) dx = -dx;
+    const p1 = { x: a.x + (dx / n) * L, y: Math.max(margem, Math.min(h - margem * 3, a.y + (dy / n) * L)) };
     const ombro = u * 4 * Math.sign(dx || 1);
     const p2 = { x: p1.x + ombro, y: p1.y };
     const pL = faixa(vis, 0, 0.7);
@@ -210,11 +229,9 @@ export class Annotations {
     it.linha.setAttribute('points', pts);
     it.ponto.setAttribute('cx', a.x);
     it.ponto.setAttribute('cy', a.y);
-    it.txt.textContent = typeof it.texto === 'function' ? it.texto() : it.texto;
     it.txt.setAttribute('x', p2.x + u * 1 * Math.sign(dx || 1));
     it.txt.setAttribute('y', p2.y);
     it.txt.setAttribute('text-anchor', dx < 0 ? 'end' : 'start');
-    it.txt.setAttribute('font-size', fonte * 1.12);
     it.txt.setAttribute('opacity', faixa(vis, 0.65, 1));
   }
 }

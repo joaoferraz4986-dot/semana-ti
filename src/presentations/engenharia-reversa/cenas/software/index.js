@@ -317,10 +317,10 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
   // anotações
   // =====================================================================
   annotations.rotulo({
-    ancora: pontoEm(placaFonte, -0.8, 0.45, 0.02),
+    ancora: pontoEm(placaFonte, -0.2, 0.55, 0.02),
     texto: 'código-fonte: escrito para pessoas',
-    direcao: [-1, -0.6],
-    comprimento: 6,
+    direcao: [-0.35, -1],
+    comprimento: 5,
     visivel: () => P.presenca * clamp01(1 - Math.abs(P.codigo - 1) * 2.5),
   });
   annotations.rotulo({
