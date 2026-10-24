@@ -87,10 +87,10 @@ export class Stage {
     chave.castShadow = true;
     const sc = chave.shadow.camera;
     // o frustum da sombra cobre todo o chão (senão aparece uma linha na borda)
-    sc.left = -16;
-    sc.right = 16;
-    sc.top = 16;
-    sc.bottom = -16;
+    sc.left = -19;
+    sc.right = 19;
+    sc.top = 19;
+    sc.bottom = -19;
     sc.near = 1;
     sc.far = 30;
     chave.shadow.radius = 14;
@@ -125,7 +125,7 @@ export class Stage {
   #criarChao() {
     // chão infinito: só recebe sombra, a cor vem do fundo (clear color)
     const sombra = new THREE.Mesh(
-      new THREE.PlaneGeometry(22, 22),
+      new THREE.PlaneGeometry(30, 30),
       new THREE.ShadowMaterial({ color: 0x2a2219, opacity: 0.3 }),
     );
     sombra.rotation.x = -Math.PI / 2;
@@ -173,6 +173,14 @@ export class Stage {
     this.scene.add(poca, sombra, contato);
     this.chao = { sombra, contato, poca };
     this.scene.fog = new THREE.Fog(0xece8e1, 18, 48);
+  }
+
+  // posiciona o holofote (e a poça de luz no chão) sobre um ponto da cena
+  focar(alvo) {
+    const { spot } = this.luzes;
+    spot.position.set(alvo.x + 1.2, 11, alvo.z + 3.2);
+    spot.target.position.set(alvo.x, 0, alvo.z);
+    this.chao.poca.position.set(alvo.x + 0.3, 0.001, alvo.z + 0.6);
   }
 
   setQualidade(chave) {

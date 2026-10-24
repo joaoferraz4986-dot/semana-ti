@@ -133,11 +133,6 @@ export function iniciarApresentacao(config) {
     container: camada,
     capitulos,
     paradas,
-    aoIrPasso: (ci, passo) => nav.irPara(capitulos[ci].primeiraParada + Math.min(passo, capitulos[ci].nParadas - 1)),
-    aoAcao: (acao) => {
-      const cena = cenas[paradas[nav.ativa]?.cena];
-      cena?.action?.(acao);
-    },
   });
   const progresso = new Progress(body, capitulos);
   const ajuda = new Help(body, config.titulo || 'Apresentação');
@@ -186,38 +181,8 @@ export function iniciarApresentacao(config) {
       nav.irPara(Math.round(nav.t));
       toast.mostrar('Câmera recentralizada');
     },
-    escape: () => {
-      if (ajuda.aberta) ajuda.alternar(false);
-      else for (const nome in cenas) cenas[nome].reset?.();
-    },
+    escape: () => ajuda.alternar(false),
   };
-
-  // ---------- interação com o 3D (clique em peças) ----------
-  if (stage) {
-    const ray = new THREE.Raycaster();
-    const ndc = new THREE.Vector2();
-    let inicio = null;
-    const atualizarRaio = (e) => {
-      ndc.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
-      ray.setFromCamera(ndc, stage.camera);
-    };
-    const cenaAtiva = () => cenas[paradas[nav.ativa]?.cena];
-    stage.canvas.addEventListener('pointermove', (e) => {
-      const cena = cenaAtiva();
-      if (!cena?.onPointer) return;
-      atualizarRaio(e);
-      const sobre = cena.onPointer('move', ray, e);
-      stage.canvas.style.cursor = sobre ? 'pointer' : '';
-    });
-    stage.canvas.addEventListener('pointerdown', (e) => (inicio = { x: e.clientX, y: e.clientY }));
-    stage.canvas.addEventListener('pointerup', (e) => {
-      if (!inicio || Math.hypot(e.clientX - inicio.x, e.clientY - inicio.y) > 6) return;
-      const cena = cenaAtiva();
-      if (!cena?.onPointer) return;
-      atualizarRaio(e);
-      cena.onPointer('click', ray, e);
-    });
-  }
 
   // ---------- estado inicial ----------
   const inicial = chapters.paradaDoHash(location.hash) ?? 0;

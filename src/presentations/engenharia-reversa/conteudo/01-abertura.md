@@ -1,15 +1,15 @@
 ---
 titulo: Engenharia|reversa
 rotulo: Semana de TI · Sala IA vs Humanos
-cena: maquina
-estado: fechada
-camera: escuro
+cena: software
+estado: selado
+camera: bloco-escuro
 clima: holofote
 layout: esquerda
 destaque: sim
 ---
 
-Descobrir o que existe por trás da superfície.
+Descobrir o que um programa faz por dentro.
 
-<!-- passo camera=abertura-perto -->
-E se você tivesse o objeto, mas **não o projeto original?**
+<!-- passo camera=bloco-perto estado=selado-rotulo -->
+E se você tivesse o programa, mas **não o código?**

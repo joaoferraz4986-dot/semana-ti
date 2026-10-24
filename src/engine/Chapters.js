@@ -46,12 +46,10 @@ export function montarParadas(capitulos, padrao = {}) {
 const reduzido = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export class Chapters {
-  constructor({ container, capitulos, paradas, aoIrPasso, aoAcao }) {
+  constructor({ container, capitulos, paradas }) {
     this.container = container;
     this.capitulos = capitulos;
     this.paradas = paradas;
-    this.aoIrPasso = aoIrPasso;
-    this.aoAcao = aoAcao;
     this.atual = { cap: -1, passo: -1 };
     this.#construir();
   }
@@ -88,17 +86,9 @@ export class Chapters {
       cap.linhas = [...el.querySelectorAll('.capitulo__titulo .linha > span')];
       cap.rotuloEl = el.querySelector('.capitulo__rotulo');
       cap.caixa = el.querySelector('.capitulo__caixa');
-      cap.botoes = [...el.querySelectorAll('.botao')];
       // passos vazios (ex.: só mudam a câmera) não ocupam espaço
       cap.passosEls.forEach((p) => (p.dataset.vazio = p.textContent.trim() ? '' : 'sim'));
 
-      for (const b of cap.botoes) {
-        b.addEventListener('click', () => {
-          if (b.dataset.passo != null) this.aoIrPasso?.(ci, Number(b.dataset.passo));
-          if (b.dataset.acao != null) this.aoAcao?.(b.dataset.acao, ci);
-          b.blur();
-        });
-      }
     });
   }
 
@@ -113,7 +103,6 @@ export class Chapters {
       this.#passos(this.capitulos[cap], passo, passo > this.atual.passo);
     }
     this.atual = { cap, passo };
-    for (const b of this.capitulos[cap].botoes) b.classList.toggle('ativo', b.dataset.passo != null && Number(b.dataset.passo) === passo);
   }
 
   #visiveis(cap, passo) {

@@ -38,7 +38,7 @@ export const materiais = {
   ceramicaCinza: () => fisico({ color: 0xc4c0b8, roughness: 0.62, metalness: 0 }),
   // alumínio jateado (micro-esferas)
   aluminio: () => fisico({ color: 0xbdbab4, roughness: 0.52, metalness: 1 }),
-  // aço usinado (eixos)
+  // aço usinado
   aco: () => fisico({ color: 0xb4b2ae, roughness: 0.26, metalness: 1 }),
   acoEscuro: () => fisico({ color: 0x8a8884, roughness: 0.34, metalness: 1 }),
   // alumínio anodizado escuro
@@ -46,9 +46,9 @@ export const materiais = {
   borracha: () => fisico({ color: 0x1d1c1b, roughness: 0.92, metalness: 0 }),
   // pintura eletrostática na cor de destaque
   acento: (cor) => fisico({ color: new THREE.Color(cor), roughness: 0.5, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.45 }),
-  latao: () => fisico({ color: 0xc8a25a, roughness: 0.32, metalness: 1 }),
-  pcb: (mapa) => fisico({ color: 0xffffff, map: mapa || null, roughness: 0.45, metalness: 0, clearcoat: 0.5, clearcoatRoughness: 0.3 }),
-  chip: () => fisico({ color: 0x1a1918, roughness: 0.7, metalness: 0 }),
+  // superfícies impressas/gravadas: cor vem da textura (map)
+  impresso: (mapa, props = {}) => fisico({ color: 0xffffff, map: mapa || null, roughness: 0.62, metalness: 0, ...props }),
+  vidro: () => fisico({ color: 0x0d0d0e, roughness: 0.12, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.05 }),
 };
 
 export { comDigital };

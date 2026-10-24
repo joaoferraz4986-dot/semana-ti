@@ -129,12 +129,15 @@ export class Director {
       const dist = this.pos.distanceTo(this.alvo);
       _right.setFromMatrixColumn(cam.matrix, 0);
       _up.setFromMatrixColumn(cam.matrix, 1);
-      cam.position.addScaledVector(_right, p.sx * dist * 0.022).addScaledVector(_up, -p.sy * dist * 0.014);
+      // parallax quase imperceptível (só dá vida; nada reage a clique)
+      cam.position.addScaledVector(_right, p.sx * dist * 0.005).addScaledVector(_up, -p.sy * dist * 0.003);
       cam.lookAt(this.alvo);
       cam.fov = this.fov;
       const { w, h } = st.tamanho;
       cam.setViewOffset(w, h, this.desl.x * w, this.desl.y * h, w, h);
       cam.updateProjectionMatrix();
+      // o holofote ilumina aquilo para onde a câmera olha
+      st.focar?.(this.alvo);
     }
 
     // --- clima

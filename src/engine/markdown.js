@@ -2,7 +2,6 @@
 // Suporta só o necessário (de propósito, para ser previsível):
 //   frontmatter entre ---  ·  **negrito**  ·  *itálico*  ·  parágrafos (quebra de linha = <br>)
 //   - lista  ·  1. lista numerada  ·  > nota pequena  ·  A → B → C (fluxo)  ·  C ← B ← A (fluxo reverso)
-//   [[Texto do botão|passo:1]]  ou  [[Texto|acao:nome]]
 //   ::: verdade  ...  :::   (cartões de "prova": verdade, exagero, humano, alerta, fato)
 //   <!-- passo -->  separa passos internos; aceita atributos: <!-- passo estado=x camera=y clima=holofote -->
 
@@ -80,14 +79,6 @@ function renderFluxo(linha) {
   }<div class="fluxo__itens">${html}</div></div>`;
 }
 
-function renderBotoes(linha) {
-  const botoes = [...linha.matchAll(/\[\[([^\]|]+)\|([^\]]+)\]\]/g)].map((m) => {
-    const [tipo, valor] = m[2].split(':').map((s) => s.trim());
-    return `<button type="button" class="botao" data-${tipo}="${valor}">${m[1].trim()}</button>`;
-  });
-  return `<div class="controles">${botoes.join('')}</div>`;
-}
-
 export function renderBlocos(md) {
   const linhas = md.replace(/\r\n?/g, '\n').split('\n');
   const out = [];
@@ -120,12 +111,6 @@ export function renderBlocos(md) {
       out.push(
         `<article class="prova prova--${tipo}"><span class="carimbo">${inline(carimbo)}</span>${manchete}${renderBlocos(dentro.join('\n'))}</article>`,
       );
-      continue;
-    }
-
-    if (/^\[\[.+\]\]/.test(t)) {
-      out.push(renderBotoes(t));
-      i++;
       continue;
     }
 
@@ -168,7 +153,7 @@ export function renderBlocos(md) {
     while (
       i < linhas.length &&
       !vazia(linhas[i]) &&
-      !/^\s*([-*]\s+|\d+\.\s+|>|:::|\[\[)/.test(linhas[i]) &&
+      !/^\s*([-*]\s+|\d+\.\s+|>|:::)/.test(linhas[i]) &&
       !RE_FLUXO.test(linhas[i].trim())
     ) {
       par.push(linhas[i++].trim());

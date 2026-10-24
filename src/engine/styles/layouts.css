@@ -286,14 +286,6 @@
   transform: translateY(-50%) rotate(-135deg);
 }
 
-/* controles (botões) */
-.controles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(var(--u) * 1.4);
-  pointer-events: auto;
-}
-
 /* "provas" de editor: ::: verdade / ::: exagero / ::: humano / ::: alerta / ::: fato */
 .prova {
   position: relative;

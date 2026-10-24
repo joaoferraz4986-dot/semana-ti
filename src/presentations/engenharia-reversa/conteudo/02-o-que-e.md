@@ -1,14 +1,16 @@
 ---
-titulo: Do objeto|ao conhecimento
+titulo: Estudar o que|já existe
 rotulo: 02 · O que é
-cena: maquina
-estado: fechada
-camera: tres-quartos
+estado: celular-apagado
+camera: celular
 clima: estudio
-layout: esquerda
+layout: direita
 ---
 
-Engenharia reversa é investigar algo que **já existe** para entender como foi feito e como funciona.
+Engenharia reversa de software é estudar um programa pronto para entender **como ele funciona**, sem ter o código-fonte.
 
-<!-- passo estado=girando camera=tres-quartos-perto -->
-Objeto → Análise → Conhecimento
+<!-- passo estado=celular-ligado camera=celular-perto -->
+Você vê o app.
+
+<!-- passo estado=celular-duvida camera=celular-lado -->
+Mas não vê **como ele foi feito**.

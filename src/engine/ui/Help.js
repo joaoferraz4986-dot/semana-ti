@@ -5,9 +5,9 @@ const ATALHOS = [
   ['Home / End', 'Início / fim'],
   ['F', 'Tela cheia'],
   ['Q', 'Qualidade gráfica (Alta, Média, Baixa)'],
-  ['R', 'Recentralizar a câmera do capítulo'],
+  ['R', 'Recentralizar a câmera'],
   ['H', 'Mostrar ou esconder esta ajuda'],
-  ['Esc', 'Fechar ajuda / soltar peça selecionada'],
+  ['Esc', 'Fechar esta ajuda'],
 ];
 
 export class Help {

@@ -1,14 +1,19 @@
 ---
-titulo: Criar é uma direção.|Descobrir é a outra.
+titulo: Compilar é uma direção.|Investigar é a outra.
 rotulo: 03 · Duas direções
-cena: maquina
-estado: digital-meio
-camera: distante
+estado: fonte
+camera: compilar
 clima: estudio
 layout: inferior
 ---
 
-Engenharia convencional: Requisitos → Projeto → Protótipo → Produto
-Engenharia reversa: Modelo ← Análise ← Inspeção ← Produto existente
+O **código-fonte** é texto escrito para pessoas lerem.
 
-> O caminho de volta não recupera o projeto original exato: ele gera um modelo novo, baseado em evidências.
+<!-- passo estado=compilado -->
+Compilar: Código-fonte → Compilador → Executável
+
+<!-- passo estado=volta camera=volta -->
+Engenharia reversa: Pistas ← Análise ← Executável
+
+<!-- passo estado=volta-pistas -->
+> O caminho de volta não devolve o código original. Devolve **pistas**.
