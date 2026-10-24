@@ -133,8 +133,10 @@ export class Director {
       // parallax quase imperceptível (só dá vida; nada reage a clique)
       cam.position.addScaledVector(_right, p.sx * dist * 0.005).addScaledVector(_up, -p.sy * dist * 0.003);
       cam.lookAt(this.alvo);
-      cam.fov = this.fov;
       const { w, h } = st.tamanho;
+      // telas mais estreitas que 16:9 (ex.: 16:10, 4:3): abre a lente para manter a largura do enquadramento
+      const aspecto = w / h;
+      cam.fov = aspecto < 16 / 9 ? THREE.MathUtils.radToDeg(2 * Math.atan((Math.tan(THREE.MathUtils.degToRad(this.fov / 2)) * (16 / 9)) / aspecto)) : this.fov;
       cam.setViewOffset(w, h, this.desl.x * w, this.desl.y * h, w, h);
       cam.updateProjectionMatrix();
       // o holofote ilumina aquilo para onde a câmera olha

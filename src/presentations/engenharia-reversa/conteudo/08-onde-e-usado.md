@@ -18,5 +18,5 @@ layout: direita
 <!-- passo estado=celular-ligado camera=celular-alto -->
 - Preservação de jogos e software antigo
 
-<!-- passo estado=geral camera=geral -->
+<!-- passo estado=camadas-todas camera=camadas-geral -->
 - Auditoria de segurança autorizada

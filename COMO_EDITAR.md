@@ -140,7 +140,7 @@ Um estado é uma lista de números. Em `estados.js`, em `ESTADOS`:
 'meio-aberto': { tela: 1, camadas: 2.5, rotulosCamadas: 1 },
 ```
 
-Os números possíveis estão comentados em `PADRAO`, no topo do arquivo (ex.: `camadas` de 0 a 5, `fatias` de 0 a 4). Valores "quebrados" funcionam: `camadas: 2.5` deixa a terceira camada no meio do caminho.
+Os números possíveis estão comentados em `PADRAO`, no topo do arquivo. Exemplos: `camadas` de 0 a 5 (cada número tira a camada seguinte da tela do celular, grande e de frente; a anterior volta para dentro), `leque: 1` (abre todas lado a lado), `fatias` de 0 a 4, `exposicao: 1` (o bloco vira uma fileira de placas).
 
 ### Criar uma câmera nova
 
@@ -150,9 +150,16 @@ Em `CAMERAS`:
 'minha-camera': { pos: [5, 3, 8], alvo: [0.2, 0.8, 0], fov: 30 },
 ```
 
-`pos` é onde a câmera está, `alvo` é para onde ela olha e `fov` é a abertura (menor = mais zoom). O executável fica em x = 0, o celular em x ≈ -5,4 e o servidor em x ≈ -8,4. O motor desloca o enquadramento sozinho conforme o layout. Para achar números bons: no `npm run dev`, abra o console (F12) e digite `apresentacao.stage.camera.position`.
+`pos` é onde a câmera está, `alvo` é para onde ela olha e `fov` é a abertura (menor = mais zoom). O executável fica em x = 0, o celular em x ≈ -7,2 e o servidor em x ≈ -10,2 (bem separados, para cada capítulo enquadrar um personagem só). O motor desloca o enquadramento sozinho conforme o layout. Para achar números bons: no `npm run dev`, abra o console (F12) e digite `apresentacao.stage.camera.position`.
 
 ---
+
+### Legibilidade (já resolvida pelo motor)
+
+- Atrás da coluna de texto há um **véu** suave na cor do fundo: se um objeto escuro passar por trás, o texto continua legível.
+- Rótulos do 3D têm contorno na cor do fundo.
+- Em telas mais estreitas que 16:9, a câmera abre a lente para não cortar as laterais.
+- Mesmo assim, ao criar câmeras, prefira deixar o objeto do lado oposto ao texto.
 
 ## 6. Cor de destaque e fontes
 

@@ -19,7 +19,7 @@ Ver as mensagens que o app troca com o servidor.
 **Disassemblers e descompiladores**
 Ghidra (gratuito, liberado pela NSA em 2019) e IDA.
 
-<!-- passo estado=ferr-apk camera=camadas -->
+<!-- passo estado=ferr-apk camera=camadas-geral -->
 **Análise de APK**
 Abrir o pacote de um app Android para ver como ele se organiza.
 

@@ -47,12 +47,12 @@ Combinem antes quem fala cada capítulo. Falem para o público, não para a tela
 | Passo | Na tela | Diga |
 | --- | --- | --- |
 | (entra) | Celular sob o holofote | "Na tela, um app parece uma coisa só. Mas ele tem camadas." |
-| → | A **interface** sai da tela e flutua | "1, **Interface**: o que o usuário vê e toca." |
-| → | Sai a placa de **lógica** (código) | "2, **Lógica**: o código que decide: adicionar ao carrinho, calcular o total." |
+| → | A **interface** sai da tela, grande, na direção do público | "1, **Interface**: o que o usuário vê e toca." |
+| → | A interface volta para dentro e sai a **lógica** (código) | "2, **Lógica**: o código que decide: adicionar ao carrinho, calcular o total." |
 | → | Sai a placa de **rede** (setas app ↔ servidor) | "3, **Rede**: o app conversa com um servidor pela internet, pedindo o cardápio e enviando o pedido." |
 | → | Sai a placa de **dados** (tabela) | "4, **Dados**: o que fica guardado: itens, preços, pedidos." |
 | → | Sai a placa de **binário** | "5, **Binário**: no fundo, tudo vira bytes que o processador executa." |
-| → | A câmera recua e mostra as 5 camadas | "Cada camada se investiga de um jeito diferente. Vamos ver a mais profunda primeiro." |
+| → | As 5 camadas se abrem em leque, com nomes | "Cada camada se investiga de um jeito diferente. Vamos ver a mais profunda primeiro." |
 
 **Pergunta provável:** "Todo app tem essas camadas?" **Resposta:** "Quase todos. Às vezes a lógica fica mais no servidor do que no celular, mas a ideia é a mesma."
 
@@ -118,7 +118,7 @@ Combinem antes quem fala cada capítulo. Falem para o público, não para a tela
 
 | Passo | Na tela | Diga |
 | --- | --- | --- |
-| (entra) | Cartão **O que aconteceu**; as fatias expostas como peças de museu | "Em outubro, o REA virou um dos repositórios que mais cresceram na história do GitHub. Vieram manchetes dizendo que reconstruir qualquer software virou coisa de minutos." |
+| (entra) | Cartão **O que aconteceu**; o executável vira uma fileira de placas, como peças de museu (lógica, pseudocódigo, assembly, binário, app) | "Em outubro, o REA virou um dos repositórios que mais cresceram na história do GitHub. Vieram manchetes dizendo que reconstruir qualquer software virou coisa de minutos." |
 | → | **Verdade** | "É verdade que agentes de IA já operam ferramentas profissionais, como Ghidra, IDA e Hopper, e leem programas compilados muito mais rápido. A barreira para começar caiu." |
 | → | **Exagero**, com a fatia de pseudocódigo | "Mas o REA não é um descompilador novo: é um **conector** entre a IA e ferramentas que já existem há décadas. E ele devolve pseudocódigo e evidências, não o código original. Olhem: `param_1` continua `param_1`. Relatos informais mostram que nem sempre é mais rápido." |
 | → | **Continua humano** | "A própria documentação do REA diz: uso legítimo, com autorização, e a responsabilidade é de quem usa. A ferramenta não muda a lei." |

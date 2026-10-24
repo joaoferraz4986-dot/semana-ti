@@ -158,11 +158,16 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
   // =====================================================================
   // CELULAR (app): corpo cerâmico, aro de alumínio, tela, 5 camadas
   // =====================================================================
+  // o lado do app (celular, servidor, cabo, cartões) fica afastado do executável,
+  // para que cada capítulo enquadre um personagem só
+  const lado = new THREE.Group();
+  lado.position.x = -1.8;
+  group.add(lado);
   const CEL = { w: 1.5, h: 3.0, esp: 0.16 };
   const celular = new THREE.Group();
   celular.position.set(-5.4, 0, 0.4);
   celular.scale.setScalar(0.62);
-  group.add(celular);
+  lado.add(celular);
   // base (suporte de mesa)
   const suporte = sombra(new THREE.Mesh(new RoundedBoxGeometry(1.15, 0.24, 0.8, 3, 0.06), materiais.ceramicaCinza()));
   suporte.position.y = 0.12;
@@ -208,7 +213,7 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
   tela.position.z = CEL.esp / 2 + 0.002;
   aparelho.add(tela);
   sombra(aparelho);
-  contato(-5.4, 0.4, 1.3, 0.95);
+  contato(-7.2, 0.4, 1.3, 0.95);
 
   // as 5 camadas
   const NOMES = [
@@ -228,10 +233,10 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
       ancora: pontoEm(m, 0, -(CEL.h - 0.12) / 2, 0),
       texto: nome,
       direcao: [0.35, 1],
-      comprimento: 3.5 + (k % 2) * 2.4,
-      visivel: () => P.rotulosCamadas * P.presenca * clamp01((P.camadas - k) * 1.5 - 0.3),
+      comprimento: 3 + (k % 2) * 3,
+      visivel: () => P.rotulosCamadas * P.presenca * clamp01(P.camadas - k) * suave(P.leque),
     });
-    return { m, zFinal: 0.55 + (4 - k) * 0.6 };
+    return { m, zFinal: 0.6 + (4 - k) * 0.95 };
   });
   annotations.rotulo({
     ancora: pontoEm(aparelho, 0, 0.2, 0),
@@ -247,7 +252,7 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
   const servidor = new THREE.Group();
   servidor.position.set(-8.4, 0, -0.4);
   servidor.rotation.y = 0.35;
-  group.add(servidor);
+  lado.add(servidor);
   const torre = sombra(new THREE.Mesh(new RoundedBoxGeometry(1.1, 2.4, 1.2, 3, 0.07), materiais.ceramica()));
   torre.position.y = 1.32;
   const pe = sombra(new THREE.Mesh(new RoundedBoxGeometry(1.25, 0.12, 1.35, 2, 0.03), materiais.anodizado()));
@@ -255,7 +260,7 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
   const frenteServ = new THREE.Mesh(new THREE.PlaneGeometry(1.0, 2.25), materiais.impresso(textura(512, 1152, desenharServidor(acento))));
   frenteServ.position.set(0, 1.32, 0.603);
   servidor.add(torre, pe, frenteServ);
-  const contatoServ = contato(-8.4, -0.4, 1.4, 1.5);
+  const contatoServ = contato(-10.2, -0.4, 1.4, 1.5);
 
   const curva = new THREE.CatmullRomCurve3([
     new THREE.Vector3(-5.1, 0.035, 0.75),
@@ -267,7 +272,7 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
   const geoCabo = new THREE.TubeGeometry(curva, 160, 0.03, 8, false);
   const cabo = new THREE.Mesh(geoCabo, materiais.borracha());
   cabo.receiveShadow = false;
-  group.add(cabo);
+  lado.add(cabo);
   const totalIndices = geoCabo.index.count;
   // a curva é amostrada uma vez; o ponto em u (0..1) vem de interpolação simples
   const amostras = curva.getSpacedPoints(240);
@@ -285,7 +290,7 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
     const ida = i < 4;
     const c = new THREE.Mesh(esfera, ida ? mIda : mVolta);
     c.castShadow = true;
-    group.add(c);
+    lado.add(c);
     contas.push({ c, ida, fase: (i % 4) / 4 });
   }
 
@@ -297,7 +302,7 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
   const mkCartao = (tex, w, h) => {
     const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), cartaoMat(tex));
     m.castShadow = false;
-    group.add(m);
+    lado.add(m);
     return m;
   };
   const cReq = mkCartao(textura(1024, 640, desenharRequisicao(acento)), 1.5, 0.94);
@@ -379,6 +384,15 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
       f.g.rotation.y = (-Math.PI / 2) * b;
       f.g.scale.setScalar(esc);
     }
+    // exposição (capítulo da IA): o miolo também vira uma placa da fileira
+    {
+      const f = fatias[4];
+      const ex = suave(P.exposicao);
+      const esc = 1 - 0.42 * ex;
+      f.g.position.set(lerp(f.casa.x, 1.2, ex), lerp(f.casa.y, f.casa.y * esc, ex) + Math.sin(ex * Math.PI) * 0.45, f.casa.z - ex * 2.5);
+      f.g.rotation.y = (-Math.PI / 2) * ex;
+      f.g.scale.setScalar(esc);
+    }
     rotuloMat.opacity = P.rotuloBloco * 0.95;
     rotulo.visible = rotuloMat.opacity > 0.01;
     fenda.scale.x = Math.max(0.001, 1 - P.selado);
@@ -395,12 +409,22 @@ export function criarSoftware({ stage, annotations, materiais, acento }) {
     placaFonte.scale.y = Math.max(0.001, c1 * (1 - desce * 0.15));
 
     // ---- celular
-    mTela.emissiveIntensity = P.tela * (1 - suave(clamp01(P.camadas))) * 0.95;
+    // camada por camada: cada uma sai da tela, grande e de frente para a câmera;
+    // quando a próxima vem, a anterior volta para dentro. No "leque", todas se abrem.
+    const lq = suave(P.leque);
+    mTela.emissiveIntensity = P.tela * (1 - suave(clamp01(P.camadas * 2))) * 0.95;
     giro.rotation.y = suave(P.virar) * 2.5;
     camadas.forEach((c, k) => {
-      const e = suave(clamp01(P.camadas - k));
-      c.m.visible = e > 0.001;
-      c.m.position.set(e * (k - 2) * 0.05, e * 0.06 * (2 - k), lerp(0, c.zFinal, e));
+      const sai = suave(clamp01((P.camadas - k) * 2 - 1)); // 2ª metade da transição: sai da tela
+      const volta = suave(clamp01((P.camadas - k - 1) * 2)); // 1ª metade da próxima: volta para dentro
+      const destaque = sai * (1 - volta);
+      const abre = lq * suave(clamp01(P.camadas - k));
+      c.m.visible = destaque > 0.001 || abre > 0.001;
+      c.m.position.set(
+        lerp(0, (k - 2) * 0.12, abre),
+        lerp(0.1 * destaque, 0.06 * (2 - k), abre),
+        lerp(2.4 * destaque, c.zFinal, abre),
+      );
     });
 
     // ---- servidor, cabo e contas

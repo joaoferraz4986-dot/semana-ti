@@ -15,7 +15,7 @@ layout: esquerda
 <!-- passo estado=selado camera=bloco-estudio -->
 - Leis, termos de uso e contratos podem **restringir**
 
-<!-- passo estado=geral camera=geral -->
+<!-- passo estado=api-doc camera=api-doc -->
 - Sempre com **autorização**
 
 > Não é automaticamente legal nem ilegal: depende do país e do objetivo.

@@ -24,6 +24,30 @@
 .capitulo.visivel {
   visibility: visible;
 }
+/* véu na cor do fundo atrás da coluna de texto: se um objeto escuro passar por trás, o texto continua legível */
+.capitulo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  --veu: color-mix(in srgb, var(--fundo) 92%, transparent);
+  --veu-meio: color-mix(in srgb, var(--fundo) 70%, transparent);
+  background: linear-gradient(90deg, var(--veu) 0%, var(--veu-meio) 36%, transparent 52%);
+}
+.layout-direita::before {
+  background: linear-gradient(270deg, var(--veu) 0%, var(--veu-meio) 36%, transparent 52%);
+}
+.layout-inferior::before,
+.layout-rodape::before {
+  background: linear-gradient(0deg, var(--veu) 0%, var(--veu-meio) 30%, transparent 48%);
+}
+.layout-topo::before {
+  background: linear-gradient(180deg, var(--veu) 0%, var(--veu-meio) 30%, transparent 48%);
+}
+.layout-centro::before {
+  background: radial-gradient(ellipse at 40% 55%, var(--veu-meio), transparent 70%);
+}
 
 .capitulo__caixa {
   grid-column: 1 / span 5;

@@ -141,15 +141,16 @@ export function desenharApp(g, w, h, { acento }) {
 function cabecalhoCamada(g, w, h, n, nome) {
   g.font = `600 ${w * 0.05}px ${SANS}`;
   gravado(g, `${n}`, w * 0.08, h * 0.06, '#c4502b');
-  g.font = `400 ${w * 0.09}px ${SERIF}`;
-  gravado(g, nome, w * 0.16, h * 0.065);
+  g.font = `400 ${w * 0.13}px ${SERIF}`;
+  gravado(g, nome, w * 0.17, h * 0.07);
   g.strokeStyle = 'rgba(25,23,20,0.35)';
-  g.lineWidth = 2;
+  g.lineWidth = 3;
   g.beginPath();
-  g.moveTo(w * 0.08, h * 0.085);
-  g.lineTo(w * 0.92, h * 0.085);
+  g.moveTo(w * 0.08, h * 0.092);
+  g.lineTo(w * 0.92, h * 0.092);
   g.stroke();
 }
+// letras grandes: cada camada aparece sozinha, ocupando boa parte da tela da TV
 
 export function desenharCamada(tipo, acento) {
   return (g, w, h) => {
@@ -158,24 +159,22 @@ export function desenharCamada(tipo, acento) {
     const m = w * 0.08;
     if (tipo === 'logica') {
       cabecalhoCamada(g, w, h, 2, 'Lógica');
-      g.font = `400 ${w * 0.036}px ${MONO}`;
+      g.font = `500 ${w * 0.05}px ${MONO}`;
       const linhas = [
-        'function adicionar(item) {',
+        'adicionar(item) {',
         '  carrinho.push(item)',
         '  total += item.preco',
-        '  atualizarTela()',
         '}',
         '',
-        'function fazerPedido() {',
-        '  if (carrinho.length === 0)',
-        '    return avisar("vazio")',
-        '  api.post("/pedidos", carrinho)',
+        'fazerPedido() {',
+        '  if (vazio) return',
+        '  api.post("/pedidos")',
         '}',
       ];
-      linhas.forEach((l, i) => gravado(g, l, m, h * (0.15 + i * 0.045), TINTA));
+      linhas.forEach((l, i) => gravado(g, l, m, h * (0.16 + i * 0.058), TINTA));
       // o resto vira "textura de código" (barras), como num mapa
-      for (let i = 0; i < 13; i++) {
-        const y = h * (0.66 + i * 0.024);
+      for (let i = 0; i < 10; i++) {
+        const y = h * (0.73 + i * 0.022);
         const ind = (i % 4) * w * 0.05;
         g.fillStyle = i % 5 === 2 ? 'rgba(196,80,43,0.55)' : 'rgba(25,23,20,0.28)';
         g.fillRect(m + ind, y, w * (0.25 + ((i * 37) % 40) / 100), h * 0.008);
@@ -187,12 +186,12 @@ export function desenharCamada(tipo, acento) {
         g.lineWidth = 3;
         retArred(g, x, y, w * 0.34, h * 0.07, 10);
         g.stroke();
-        g.font = `500 ${w * 0.04}px ${SANS}`;
-        gravado(g, txt, x + w * 0.04, y + h * 0.045);
+        g.font = `500 ${w * 0.06}px ${SANS}`;
+        gravado(g, txt, x + w * 0.04, y + h * 0.047);
       };
       caixa(m, h * 0.18, 'app');
       caixa(w - m - w * 0.34, h * 0.18, 'servidor');
-      g.font = `400 ${w * 0.034}px ${MONO}`;
+      g.font = `500 ${w * 0.05}px ${MONO}`;
       const msgs = ['GET  /cardapio', '200  [ … ]', 'POST /pedidos', '201  { pedido }'];
       msgs.forEach((t, i) => {
         const y = h * (0.33 + i * 0.12);
@@ -226,7 +225,7 @@ export function desenharCamada(tipo, acento) {
       ];
       linhas.forEach((l, i) => {
         const y = h * (0.17 + i * 0.07);
-        g.font = i === 0 ? `600 ${w * 0.042}px ${SANS}` : `400 ${w * 0.042}px ${MONO}`;
+        g.font = i === 0 ? `600 ${w * 0.056}px ${SANS}` : `500 ${w * 0.05}px ${MONO}`;
         l.forEach((t, j) => gravado(g, t, cols[j], y, i === 0 ? '#c4502b' : TINTA));
         g.strokeStyle = 'rgba(25,23,20,0.3)';
         g.lineWidth = i === 0 ? 3 : 1.5;
@@ -243,14 +242,14 @@ export function desenharCamada(tipo, acento) {
       }
     } else if (tipo === 'binario') {
       cabecalhoCamada(g, w, h, 5, 'Binário');
-      g.font = `400 ${w * 0.03}px ${MONO}`;
+      g.font = `500 ${w * 0.046}px ${MONO}`;
       let s = 7;
       const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
-      for (let i = 0; i < 36; i++) {
+      for (let i = 0; i < 25; i++) {
         let linha = '';
-        for (let j = 0; j < 8; j++) linha += Math.floor(rnd() * 256).toString(2).padStart(8, '0').slice(0, 4) + ' ';
-        g.fillStyle = i % 9 === 4 ? 'rgba(196,80,43,0.85)' : 'rgba(25,23,20,0.62)';
-        g.fillText(linha, m, h * (0.13 + i * 0.023));
+        for (let j = 0; j < 6; j++) linha += Math.floor(rnd() * 256).toString(2).padStart(8, '0').slice(0, 4) + ' ';
+        g.fillStyle = i % 6 === 2 ? 'rgba(196,80,43,0.9)' : 'rgba(25,23,20,0.7)';
+        g.fillText(linha, m, h * (0.15 + i * 0.033));
       }
     }
   };

@@ -5,6 +5,9 @@
 }
 
 html {
+  /* a navegação usa a rolagem, mas a barra não aparece (no Windows ela ficava visível na lateral) */
+  scrollbar-width: none;
+  overflow-x: hidden;
   background: var(--fundo);
   color: var(--texto);
   -webkit-text-size-adjust: 100%;
@@ -96,6 +99,21 @@ em {
 .anotacoes text {
   font-feature-settings: 'tnum';
   fill: currentColor;
+  /* contorno na cor do fundo: o texto continua legível mesmo sobre objetos escuros */
+  paint-order: stroke;
+  stroke: var(--fundo);
+  stroke-width: calc(var(--u) * 0.6);
+  stroke-linejoin: round;
+}
+.anotacoes line,
+.anotacoes polyline,
+.anotacoes path,
+.anotacoes circle {
+  filter: drop-shadow(0 0 1.5px var(--fundo)) drop-shadow(0 0 1px var(--fundo));
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* ---------- interface ---------- */
