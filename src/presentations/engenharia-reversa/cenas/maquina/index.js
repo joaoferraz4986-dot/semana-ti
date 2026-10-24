@@ -206,7 +206,8 @@ export function criarMaquina({ stage, annotations, materiais, globais, acento, g
       ancora: ancoraDe(dados.id),
       direcao: dados.balao,
       comprimento: dados.comprimento || 9,
-      visivel: () => P.baloes * P.presenca * (selecionada && selecionada !== dados.id ? 0.35 : 1),
+      visivel: () => P.baloes * P.presenca,
+      opacidade: () => (selecionada && selecionada !== dados.id ? 0.25 : 1),
       destaque: () => (selecionada === dados.id ? 1 : 0),
     });
   }

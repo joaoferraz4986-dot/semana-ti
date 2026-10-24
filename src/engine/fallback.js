@@ -19,5 +19,5 @@ export const ILUSTRACAO_PADRAO = `
     <line x1="176" y1="268" x2="176" y2="284"/>
     <line x1="324" y1="268" x2="324" y2="284"/>
   </g>
-  <text x="250" y="294" fill="currentColor" stroke="none" font-size="11" text-anchor="middle" font-family="sans-serif">Ø 52 (ilustrativo)</text>
+  <text x="250" y="294" fill="currentColor" stroke="none" font-size="11" text-anchor="middle" font-family="Instrument Sans, sans-serif">Ø 52 (ilustrativo)</text>
 </svg>`;

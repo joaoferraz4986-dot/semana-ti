@@ -34,14 +34,14 @@ export class Annotations {
     return out;
   }
 
-  balao({ numero, ancora, direcao = [0, -1], comprimento = 9, visivel, destaque = () => 0 }) {
+  balao({ numero, ancora, direcao = [0, -1], comprimento = 9, visivel, destaque = () => 0, opacidade = () => 1 }) {
     const g = el('g', {}, this.svg);
     const linha = el('line', { 'stroke-width': 1.2, stroke: 'currentColor' }, g);
     const ponto = el('circle', { r: 2.6, fill: 'currentColor' }, g);
     const circ = el('circle', { fill: 'none', stroke: 'currentColor', 'stroke-width': 1.4 }, g);
     const txt = el('text', { 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-weight': 600 }, g);
     txt.textContent = String(numero);
-    const item = { tipo: 'balao', g, linha, ponto, circ, txt, ancora, direcao, comprimento, visivel, destaque, a: {}, ultimo: -1 };
+    const item = { tipo: 'balao', g, linha, ponto, circ, txt, ancora, direcao, comprimento, visivel, destaque, opacidade, a: {} };
     this.itens.push(item);
     return item;
   }
@@ -112,6 +112,7 @@ export class Annotations {
     it.circ.setAttribute('r', r);
     it.circ.setAttribute('stroke-dasharray', `${circ * pC} ${circ}`);
     it.circ.setAttribute('transform', `rotate(-90 ${bx} ${by})`);
+    it.g.style.opacity = it.opacidade();
     const dest = clamp01(it.destaque());
     it.circ.setAttribute('fill', dest > 0.5 ? 'var(--acento)' : 'none');
     it.circ.setAttribute('stroke', dest > 0.5 ? 'var(--acento)' : 'currentColor');
