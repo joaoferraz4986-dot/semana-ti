@@ -34,10 +34,10 @@ const fisico = (props) => comDigital(new THREE.MeshPhysicalMaterial(props));
 
 export const materiais = {
   // cerâmica fosca off-white
-  ceramica: () => fisico({ color: 0xeeeae2, roughness: 0.58, metalness: 0, clearcoat: 0.12, clearcoatRoughness: 0.55 }),
+  ceramica: () => fisico({ color: 0xe3ded4, roughness: 0.6, metalness: 0, clearcoat: 0.12, clearcoatRoughness: 0.55 }),
   ceramicaCinza: () => fisico({ color: 0xc4c0b8, roughness: 0.62, metalness: 0 }),
   // alumínio jateado (micro-esferas)
-  aluminio: () => fisico({ color: 0xc9c7c3, roughness: 0.4, metalness: 1 }),
+  aluminio: () => fisico({ color: 0xbdbab4, roughness: 0.52, metalness: 1 }),
   // aço usinado (eixos)
   aco: () => fisico({ color: 0xb4b2ae, roughness: 0.26, metalness: 1 }),
   acoEscuro: () => fisico({ color: 0x8a8884, roughness: 0.34, metalness: 1 }),

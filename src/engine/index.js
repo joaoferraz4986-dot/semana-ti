@@ -94,7 +94,12 @@ export function iniciarApresentacao(config) {
   }
 
   // ---------- resolve cada parada: câmera, enquadramento e parâmetros das cenas ----------
-  const avisar = (p, msg) => console.warn(`[conteúdo] ${capitulos[p.cap].arquivo}: ${msg}`);
+  const avisados = new Set();
+  const avisar = (p, msg) => {
+    const txt = `[conteúdo] ${capitulos[p.cap].arquivo}: ${msg}`;
+    if (!avisados.has(txt)) console.warn(txt);
+    avisados.add(txt);
+  };
   for (const p of paradas) {
     const cena = cenas[p.cena];
     if (stage && p.cena && !cena && !config.cenas?.[p.cena]) avisar(p, `cena "${p.cena}" não existe`);
