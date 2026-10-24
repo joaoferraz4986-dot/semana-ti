@@ -4,6 +4,12 @@ Guia para quem sabe o básico de programação. Na maior parte das mudanças **n
 
 Antes de tudo, rode `npm run dev` e abra `http://localhost:5173/engenharia-reversa/`. Cada vez que você salva um arquivo, a página atualiza sozinha. Se algo estiver errado num capítulo (câmera ou estado com nome errado), aparece um aviso no console do navegador (F12 → Console) dizendo qual arquivo corrigir.
 
+## A regra da apresentação
+
+- **Nada na tela é clicável.** A única interação é navegar: setas, passador (PageUp/PageDown), Espaço, rolagem.
+- **Uma passada para cada explicação.** Cada parada (capítulo ou passo interno) faz **uma** mudança animada que ilustra **uma** ideia que o apresentador está falando. Use de 2 a 5 passos por capítulo.
+- Voltar sempre restaura o estado anterior, porque tudo é calculado a partir da posição na apresentação.
+
 ---
 
 ## 1. Onde fica cada coisa
@@ -11,8 +17,9 @@ Antes de tudo, rode `npm run dev` e abra `http://localhost:5173/engenharia-rever
 | Quero mudar… | Arquivo |
 | --- | --- |
 | O texto de um capítulo | `src/presentations/engenharia-reversa/conteudo/NN-nome.md` |
-| Nome e função das peças (clique na vista explodida) | `src/presentations/engenharia-reversa/cenas/maquina/pecas.js` |
-| Estados e câmeras do redutor | `src/presentations/engenharia-reversa/cenas/maquina/estados.js` |
+| Estados (o que o 3D mostra) e câmeras | `src/presentations/engenharia-reversa/cenas/software/estados.js` |
+| O exemplo de código (C, bytes, assembly, pseudocódigo) | `src/presentations/engenharia-reversa/cenas/software/exemplo.js` |
+| As texturas (tela do app, camadas, cartões da API) | `src/presentations/engenharia-reversa/cenas/software/texturas.js` |
 | Cor de destaque da apresentação | `src/presentations/engenharia-reversa/config.js` (`acento`) |
 | Cores gerais, fontes, tamanhos de texto | `src/engine/styles/tokens.css` |
 | Cores dos climas (estúdio/holofote) | `src/engine/Moods.js` (`CLIMAS`) |
@@ -23,43 +30,35 @@ Antes de tudo, rode `npm run dev` e abra `http://localhost:5173/engenharia-rever
 
 ## 2. Trocar o texto de um capítulo
 
-Abra o `.md` do capítulo. Ele tem duas partes: o **cabeçalho** (entre `---`) e o **corpo**.
+Abra o `.md` do capítulo. Ele tem o **cabeçalho** (entre `---`) e o **corpo**.
 
 ```markdown
 ---
-titulo: Do objeto|ao conhecimento
+titulo: Estudar o que|já existe
 rotulo: 02 · O que é
-cena: maquina
-estado: fechada
-camera: tres-quartos
+estado: celular-apagado
+camera: celular
 clima: estudio
-layout: esquerda
+layout: direita
 ---
 
-Engenharia reversa é investigar algo que **já existe** para entender como foi feito.
+Engenharia reversa de software é estudar um programa pronto para entender **como ele funciona**.
 ```
 
 - `titulo`: o título grande. O `|` marca onde a linha quebra.
 - `rotulo`: a linha pequena acima do título.
 - No corpo: `**negrito**`, `*itálico*`. Cada linha vira uma quebra de linha e uma linha em branco separa parágrafos.
 
-**Regra de ouro:** no máximo ~25 palavras visíveis por tela. A TV é lida de longe e quem explica é quem apresenta (use o roteiro).
+**Regra de ouro:** no máximo ~25 palavras visíveis por tela. Quem explica é quem apresenta (use o roteiro).
 
 ### Recursos do corpo
 
 ```markdown
 - item de lista
-- outro item
-
-1. **Observar** forma, encaixes, marcas      ← lista numerada (só para sequências de verdade)
-2. **Medir** com paquímetro
-
-> Nota pequena, tipo "valores ilustrativos".
-
-Objeto → Análise → Conhecimento              ← fluxo animado da esquerda para a direita
-Engenharia reversa: Modelo ← Análise ← Produto   ← fluxo que anima da direita para a esquerda (com rótulo)
-
-[[Desmontar|passo:1]] [[Reconstruir|passo:0]]   ← botões que levam a um passo do capítulo
+1. **Interface** o que o usuário vê            ← lista numerada (só para sequências)
+> Nota pequena, tipo "exemplo simplificado".
+Código-fonte → Compilador → Executável         ← fluxo animado da esquerda para a direita
+Engenharia reversa: Pistas ← Análise ← Executável   ← fluxo que anima da direita para a esquerda (com rótulo)
 
 ::: verdade
 # Manchete do cartão
@@ -75,102 +74,98 @@ Os cartões `:::` aceitam os tipos `verdade`, `exagero`, `humano`, `alerta` e `f
 
 Os capítulos são **todos os `.md` da pasta `conteudo/`, em ordem de nome**.
 
-- **Adicionar**: crie `conteudo/08b-novo.md`, ou renumere os arquivos. Copie o cabeçalho de outro capítulo e ajuste.
-- **Remover**: apague o arquivo. Para só esconder, sem apagar, renomeie para começar com `_` (ex.: `_08-onde-e-usado.md`).
-- **Reordenar**: renomeie os números (`03-…` vira `05-…`).
+- **Adicionar**: crie, por exemplo, `conteudo/08b-novo.md`. Copie o cabeçalho de outro capítulo.
+- **Remover**: apague o arquivo. Para só esconder, renomeie para começar com `_` (ex.: `_08-onde-e-usado.md`).
+- **Reordenar**: renomeie os números.
 
-Não precisa mexer em código: a barra de progresso, os atalhos e os endereços `#capitulo-NN` se ajustam sozinhos. Lembre de atualizar o número no `rotulo` e o roteiro.
-
-> Testado: criar `13-teste.md` fez o capítulo aparecer como 13/13, e apagar o arquivo fez sumir.
+A barra de progresso, os atalhos e os endereços `#capitulo-NN` se ajustam sozinhos. Lembre de atualizar o `rotulo` e o roteiro.
 
 ---
 
-## 4. Passos internos (revelar aos poucos)
+## 4. Passos = batidas de animação
 
-Separe o corpo com `<!-- passo -->`. Cada passo é uma "parada" a mais: o apresentador aperta → e aparece o próximo pedaço.
-
-```markdown
-Primeira parte do texto.
-
-<!-- passo -->
-Segunda parte (aparece no próximo clique).
-```
-
-Um passo pode mudar o 3D, a câmera ou o clima. Ele herda tudo do anterior e só muda o que você escrever:
+Separe o corpo com `<!-- passo -->`. **Cada passo é um clique do apresentador e uma animação na tela.** Um passo pode mudar o texto, o estado do 3D, a câmera, o clima ou o layout. Ele herda tudo do anterior e só muda o que você escrever:
 
 ```markdown
-<!-- passo estado=explodida camera=explodida -->
-<!-- passo clima=holofote -->
-<!-- passo layout=direita -->
+<!-- passo estado=fatia-2 camera=fatia-2 -->
+**Assembly**: as mesmas instruções, uma por linha.
 ```
 
-Por padrão os passos **somam** (o texto anterior continua na tela). Para cada passo **trocar** o anterior, coloque no cabeçalho:
+Quando o apresentador aperta →, o motor anima suavemente do estado anterior para o novo (a fatia desliza para fora, a câmera viaja) e o texto do passo entra.
 
-```yaml
-passos-modo: troca
+### Exemplo: acrescentar uma batida nova
+
+Quero que, no capítulo 5, depois do pseudocódigo, a câmera mostre o bloco inteiro de longe antes da lógica:
+
+```markdown
+<!-- passo estado=fatia-3 camera=fatia-3 -->
+**Pseudocódigo**: o que um descompilador reconstrói.
+
+<!-- passo camera=bloco-estudio -->
+Cada fatia é uma pista diferente.
+
+<!-- passo estado=fatia-4 camera=fatia-4 -->
+**Lógica entendida**: a conclusão é de quem investiga.
 ```
+
+Pronto: mais uma parada, sem tocar em código. Lembre de pôr a frase no roteiro.
+
+Por padrão, o texto dos passos **soma** (o anterior continua na tela). Para cada passo **trocar** o anterior, coloque no cabeçalho `passos-modo: troca`.
 
 ---
 
-## 5. Clima, layout e câmera
+## 5. Clima, layout, estado e câmera
 
 | Campo | Valores |
 | --- | --- |
-| `clima` | `estudio` (fundo claro, luz suave) · `holofote` (fundo escuro, luz de museu) |
-| `layout` | `esquerda` (texto à esquerda, objeto à direita) · `direita` · `inferior` (texto embaixo, largo) · `topo` · `centro` |
-| `destaque` | `sim` deixa o título enorme (abertura/final) |
-| `cena` | nome da cena 3D (`maquina`) |
-| `estado` | estado da cena (veja abaixo) |
-| `camera` | nome da câmera (veja abaixo) |
+| `clima` | `estudio` (fundo claro) · `holofote` (fundo escuro, luz de museu, que segue o ponto para onde a câmera olha) |
+| `layout` | `esquerda` (texto à esquerda, objeto à direita) · `direita` · `inferior` (texto embaixo) · `rodape` (título longo embaixo, objeto em cima) · `topo` · `centro` |
+| `destaque` | `sim` deixa o título enorme (abertura) |
+| `estado` | o que o 3D mostra (lista abaixo) |
+| `camera` | de onde se vê (lista abaixo) |
 
-**Estados do redutor** (`cenas/maquina/estados.js`): `fechada`, `girando`, `cotada`, `parcial`, `digital`, `digital-meio`, `explodida`, `explodida-limpa`, `cortada`, `medida`, `modelo`, `engrenagem`, `duvidas`, `incerteza`, `placa`, `placa-fundo`.
+**Estados** (`cenas/software/estados.js`):
+- executável: `selado`, `selado-rotulo`, `fonte`, `compilado`, `volta`, `volta-pistas`, `fatia-1` … `fatia-4`, `pistas`;
+- app: `celular-apagado`, `celular-ligado`, `celular-duvida`, `camada-1` … `camada-5`, `camadas-todas`;
+- API: `api-inicio`, `api-trafego`, `api-requisicao`, `api-resposta`, `api-doc`;
+- outros: `ferr-devtools`, `ferr-rede`, `ferr-ghidra`, `ferr-apk`, `uso-malware`, `geral`, `ia`, `ia-pseudo`, `final-junto`.
 
-**Câmeras**: `escuro`, `abertura-perto`, `tres-quartos`, `tres-quartos-perto`, `vista-geral`, `distante`, `vista-esquerda`, `alta`, `perfil-holofote`, `explodida`, `corte`, `engrenagem`, `engrenagem-modelo`, `engrenagem-caso`, `traseira`, `traseira-perto`, `ia`, `final-holofote`, `final`.
-
-### Criar uma câmera nova
-
-Em `estados.js`, acrescente uma linha em `CAMERAS`:
-
-```js
-'minha-camera': { pos: [5, 3, 8], alvo: [0.2, 1.5, 0], fov: 30 },
-```
-
-`pos` é onde a câmera está (x, y, z), `alvo` é para onde ela olha e `fov` é a abertura (menor = mais zoom). O objeto fica no centro do chão e os eixos do redutor ficam a ~1,5 de altura. O motor desloca o enquadramento sozinho de acordo com o layout, então você não precisa compensar o texto.
-
-Dica para achar números bons: no `npm run dev`, abra o console (F12) e digite `apresentacao.stage.camera.position` numa parada parecida com o que você quer.
+**Câmeras**: `bloco-escuro`, `bloco-perto`, `bloco-estudio`, `celular`, `celular-perto`, `celular-lado`, `celular-alto`, `camadas-inicio`, `camadas`, `camadas-fundo`, `camadas-geral`, `compilar`, `volta`, `fatia-0` … `fatia-4`, `api`, `api-perto`, `api-doc`, `api-longe`, `geral`, `ia-a` … `ia-d`, `final-holofote`, `final`.
 
 ### Criar um estado novo
 
-Um estado é uma lista de números de 0 a 1. Em `estados.js`, em `ESTADOS`:
+Um estado é uma lista de números. Em `estados.js`, em `ESTADOS`:
 
 ```js
-'meio-aberta': { explodir: 0.5, baloes: 1 },
+'meio-aberto': { tela: 1, camadas: 2.5, rotulosCamadas: 1 },
 ```
 
-O motor faz a transição suave entre os estados conforme a rolagem.
+Os números possíveis estão comentados em `PADRAO`, no topo do arquivo (ex.: `camadas` de 0 a 5, `fatias` de 0 a 4). Valores "quebrados" funcionam: `camadas: 2.5` deixa a terceira camada no meio do caminho.
+
+### Criar uma câmera nova
+
+Em `CAMERAS`:
+
+```js
+'minha-camera': { pos: [5, 3, 8], alvo: [0.2, 0.8, 0], fov: 30 },
+```
+
+`pos` é onde a câmera está, `alvo` é para onde ela olha e `fov` é a abertura (menor = mais zoom). O executável fica em x = 0, o celular em x ≈ -5,4 e o servidor em x ≈ -8,4. O motor desloca o enquadramento sozinho conforme o layout. Para achar números bons: no `npm run dev`, abra o console (F12) e digite `apresentacao.stage.camera.position`.
 
 ---
 
 ## 6. Cor de destaque e fontes
 
-- **Cor de destaque**: em `config.js`, `acento: '#e4572e'`. Ela muda a linha do rótulo, a barra de progresso, os fluxos e a engrenagem 3D.
-- **Cores gerais, tamanhos e espaçamentos**: em `src/engine/styles/tokens.css`. Os tamanhos usam a unidade `--u` (1% da altura de uma tela 16:9), então ficam proporcionais em qualquer TV.
-- **Fontes**: o projeto usa Instrument Serif (títulos) e Instrument Sans (texto), instaladas via `@fontsource` (funcionam offline). Para trocar:
-  1. `npm install @fontsource/NOME-DA-FONTE`
-  2. Em `tokens.css`, troque os `@import` e as variáveis `--fonte-display` e `--fonte-texto`.
+- **Cor de destaque**: `acento` em `config.js`.
+- **Cores, tamanhos, espaçamentos**: `src/engine/styles/tokens.css`. Os tamanhos usam a unidade `--u` (1% da altura de uma tela 16:9), proporcional em qualquer TV.
+- **Fontes**: Instrument Serif (títulos) e Instrument Sans (texto), via `@fontsource` (funcionam offline). Para trocar: `npm install @fontsource/NOME`, depois troque os `@import` e as variáveis `--fonte-display` e `--fonte-texto` em `tokens.css`.
 
 ---
 
 ## 7. Criar uma nova apresentação com o template
 
-Exemplo para `minha-apresentacao`:
-
-1. **Página**: copie `engenharia-reversa/index.html` para `minha-apresentacao/index.html` e troque o `<title>` e o caminho do script:
-   ```html
-   <script type="module" src="../src/presentations/minha-apresentacao/main.js"></script>
-   ```
-   (O build encontra a pasta sozinho: toda pasta da raiz com `index.html` vira uma página.)
-2. **Código**: crie `src/presentations/minha-apresentacao/` com:
+1. **Página**: copie `engenharia-reversa/index.html` para `minha-apresentacao/index.html` e troque o `<title>` e o caminho do script (`../src/presentations/minha-apresentacao/main.js`). O build encontra a pasta sozinho.
+2. **Código**: crie `src/presentations/minha-apresentacao/`:
    ```js
    // main.js
    import { iniciarApresentacao } from '../../engine/index.js';
@@ -187,43 +182,40 @@ Exemplo para `minha-apresentacao`:
      cenaPadrao: 'minha-cena',
      conteudo: import.meta.glob('./conteudo/*.md', { query: '?raw', import: 'default', eager: true }),
      cenas: { 'minha-cena': criarCena },
-     // opcional: climas: { estudio: { fundo: '#e9e6e1' }, holofote: { spot: 9 } },
-     // opcional: ilustracao: '<svg>…</svg>'  (desenho mostrado se o PC não tiver WebGL)
+     // opcional: climas: { estudio: { fundo: '#e9e6e1' } }, ilustracao: '<svg>…</svg>' (se não houver WebGL)
    };
    ```
-3. **Conteúdo**: crie `conteudo/01-abertura.md` etc.
-4. **Página inicial**: acrescente um item em `src/hub/apresentacoes.js`.
+3. **Conteúdo**: `conteudo/01-abertura.md` etc.
+4. **Página inicial**: um item em `src/hub/apresentacoes.js`.
 5. `npm run build:arquivo` também gera `dist-arquivo/minha-apresentacao.html`.
 
 ---
 
 ## 8. Criar uma cena 3D nova (contrato de cena)
 
-Uma cena é uma função que recebe o "contexto" do motor e devolve um objeto com regras fixas.
+Uma cena é uma função que recebe o contexto do motor e devolve um objeto com regras fixas.
 
 **Recebe** `{ stage, THREE, gsap, annotations, materiais, globais, acento, reduzido }`:
-- `stage.scene`, `stage.camera`, `stage.renderer`, `stage.tamanho` (largura/altura)
-- `materiais.ceramica()`, `.aluminio()`, `.aco()`, `.anodizado()`, `.borracha()`, `.acento(cor)`… (cada chamada cria um material novo)
-- `annotations.balao({...})`, `annotations.cota({...})`, `annotations.rotulo({...})`: desenho técnico projetado do 3D
+- `stage.scene`, `stage.camera`, `stage.renderer`, `stage.tamanho` (largura/altura);
+- `materiais.ceramica()`, `.ceramicaCinza()`, `.aluminio()`, `.aco()`, `.anodizado()`, `.borracha()`, `.acento(cor)`, `.vidro()`, `.impresso(textura)` (cada chamada cria um material novo);
+- `annotations.rotulo({...})`, `annotations.cota({...})`, `annotations.balao({...})`: desenho técnico projetado do 3D.
 
 **Devolve:**
 
 | Campo | Obrigatório | Para quê |
 | --- | --- | --- |
-| `group` | sim | `THREE.Group` com tudo da cena (o motor coloca na cena) |
+| `group` | sim | `THREE.Group` com tudo da cena |
 | `defaults` | sim | valores padrão dos parâmetros (números) |
 | `states` | sim | `{ nomeDoEstado: { parametro: valor } }` |
 | `cameras` | sim | `{ nome: { pos, alvo, fov } }` |
-| `cameraPadrao` | não | nome da câmera usada se o capítulo não disser |
-| `apply(params)` | sim | chamado **todo quadro** com os parâmetros já interpolados pela rolagem (inclui `presenca`: 1 quando a cena está ativa, 0 quando não) |
-| `update(dt, tempo)` | não | animações contínuas (ex.: girar) |
-| `onPointer(tipo, raycaster)` | não | `'move'` / `'click'`; devolva `true` se o ponteiro está sobre algo clicável |
+| `cameraPadrao` | não | câmera usada se o capítulo não disser |
+| `apply(params)` | sim | chamado **todo quadro** com os parâmetros já interpolados (inclui `presenca`: 1 quando a cena está ativa) |
+| `update(dt, tempo)` | não | animações contínuas (ex.: contas correndo no cabo) |
 | `onStop(parada)` | não | avisado quando muda a parada |
-| `action(nome)` | não | chamado por botões `[[Texto|acao:nome]]` no Markdown |
-| `reset()` | não | tecla R / Esc |
+| `reset()` | não | tecla R |
 | `dispose()` | não | liberar memória |
 
-**Regra importante:** o visual deve ser **função dos parâmetros** recebidos em `apply`. Não acumule animações por conta própria. Assim, voltar ou pular capítulos sempre reconstrói a mesma imagem.
+**Regra importante:** o visual deve ser **função dos parâmetros** recebidos em `apply`. Não guarde animações acumuladas. Assim voltar ou pular capítulos sempre reconstrói a mesma imagem. Se a cena usar materiais que ficam transparentes no meio da apresentação, renderize essa variante uma vez no início, para não travar na primeira vez.
 
 ### Exemplo mínimo que funciona
 
@@ -239,7 +231,7 @@ export function criarCena({ THREE, materiais }) {
   let velocidade = 0;
   return {
     group,
-    defaults: { giro: 0, altura: 0, velocidade: 0 },
+    defaults: { altura: 0, velocidade: 0 },
     states: {
       parado: {},
       erguido: { altura: 1 },
@@ -266,31 +258,23 @@ export function criarCena({ THREE, materiais }) {
 }
 ```
 
-E no `.md`: `cena: minha-cena`, `estado: erguido`, `camera: perto`.
+E no `.md`: `cena: minha-cena`, `estado: erguido`, `camera: perto`. Cada `<!-- passo estado=girando -->` vira uma batida animada.
 
 ### Anotações (desenho técnico)
 
 ```js
-const ponto = new THREE.Vector3();
-annotations.cota({
-  de: () => ponto.set(-1, 2, 1),          // pontos 3D (no mundo)
-  ate: () => ponto2.set(1, 2, 1),
-  texto: '40 mm',
-  deslocamento: -4,                       // afastamento da linha (em "u")
-  visivel: () => P.cotas * P.presenca,    // 0..1 vindo dos parâmetros: desenha e apaga junto com a rolagem
+annotations.rotulo({
+  ancora: () => pontoNoMundo,             // função que devolve um THREE.Vector3
+  texto: 'preco virou param_1',
+  direcao: [1, -1],                       // para onde vai a linha na tela
+  visivel: () => P.pistas * P.presenca,   // 0..1 vindo dos parâmetros: desenha e apaga junto com a navegação
 });
-annotations.rotulo({ ancora: () => …, texto: 'Rolamento', direcao: [1, -1], visivel: () => … });
-annotations.balao({ numero: 3, ancora: () => …, direcao: [0, -1], visivel: () => … });
 ```
 
 ---
 
-## 9. Peças do redutor (vista explodida)
+## 9. Conferir antes de apresentar
 
-Em `cenas/maquina/pecas.js`, cada peça tem `nome`, `funcao`, `nota` e `balao` (direção da linha do número na tela). Pode editar os textos à vontade. Só **não mude o `id`**.
-
-## 10. Conferir antes de apresentar
-
-1. `npm run build`: precisa terminar sem erro.
-2. `npm run apresentar` e passe por todos os capítulos com o passador (PageDown/PageUp).
+1. `npm run build` precisa terminar sem erro.
+2. `npm run apresentar` e passe por todas as paradas com o passador (PageDown/PageUp).
 3. Gere o arquivo único (`npm run build:arquivo`) e teste o duplo clique no PC da TV.
