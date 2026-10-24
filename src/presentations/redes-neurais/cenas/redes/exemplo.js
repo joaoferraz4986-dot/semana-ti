@@ -234,7 +234,7 @@ export function criarExemplo({ materiais, annotations, P }) {
     texto: 'cada pixel vira um número de 0 a 1',
     direcao: [0.3, -1],
     comprimento: 5,
-    visivel: vis(() => P.numeros),
+    visivel: vis(() => P.numeros * (1 - P.entrar)),
   });
 
   let tempo = 0;
