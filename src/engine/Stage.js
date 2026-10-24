@@ -86,10 +86,11 @@ export class Stage {
     chave.position.set(-5, 9, 6);
     chave.castShadow = true;
     const sc = chave.shadow.camera;
-    sc.left = -7;
-    sc.right = 7;
-    sc.top = 7;
-    sc.bottom = -7;
+    // o frustum da sombra cobre todo o chão (senão aparece uma linha na borda)
+    sc.left = -16;
+    sc.right = 16;
+    sc.top = 16;
+    sc.bottom = -16;
     sc.near = 1;
     sc.far = 30;
     chave.shadow.radius = 14;
@@ -124,7 +125,7 @@ export class Stage {
   #criarChao() {
     // chão infinito: só recebe sombra, a cor vem do fundo (clear color)
     const sombra = new THREE.Mesh(
-      new THREE.PlaneGeometry(80, 80),
+      new THREE.PlaneGeometry(22, 22),
       new THREE.ShadowMaterial({ color: 0x2a2219, opacity: 0.3 }),
     );
     sombra.rotation.x = -Math.PI / 2;

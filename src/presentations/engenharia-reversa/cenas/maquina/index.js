@@ -37,6 +37,47 @@ const HACHURA_FRAG = `
     gl_FragColor = vec4(mix(uFundo, uLinha, linha * 0.85), 1.0);
   }`;
 
+// Arestas "de desenho": só onde as faces vizinhas dobram mais que o limite.
+// (O EdgesGeometry padrão desenha as "pontes" internas que a triangulação cria
+// entre furos e contorno; aqui elas somem porque todas as faces são coplanares.)
+function arestas(geo, limiteGraus = 28) {
+  const pos = geo.attributes.position;
+  const idx = geo.index;
+  const n = idx ? idx.count : pos.count;
+  const cosLim = Math.cos(THREE.MathUtils.degToRad(limiteGraus));
+  const chave = (v) => `${Math.round(v.x * 1e4)},${Math.round(v.y * 1e4)},${Math.round(v.z * 1e4)}`;
+  const mapa = new Map();
+  const v = [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()];
+  const tri = new THREE.Triangle();
+  const nrm = new THREE.Vector3();
+  for (let i = 0; i < n; i += 3) {
+    for (let k = 0; k < 3; k++) v[k].fromBufferAttribute(pos, idx ? idx.getX(i + k) : i + k);
+    tri.set(v[0], v[1], v[2]);
+    if (tri.getArea() < 1e-8) continue;
+    tri.getNormal(nrm);
+    for (let k = 0; k < 3; k++) {
+      const a = v[k];
+      const b = v[(k + 1) % 3];
+      const ka = chave(a);
+      const kb = chave(b);
+      if (ka === kb) continue;
+      const id = ka < kb ? ka + '|' + kb : kb + '|' + ka;
+      let e = mapa.get(id);
+      if (!e) mapa.set(id, (e = { a: a.toArray(), b: b.toArray(), normais: [] }));
+      e.normais.push(nrm.clone());
+    }
+  }
+  const out = [];
+  for (const e of mapa.values()) {
+    const ns = e.normais;
+    let dobra = ns.length === 1;
+    // normais opostas também contam como paralelas (faces dos dois lados de uma "ponte")
+    for (let i = 0; i < ns.length && !dobra; i++) for (let j = i + 1; j < ns.length; j++) if (Math.abs(ns[i].dot(ns[j])) < cosLim) dobra = true;
+    if (dobra) out.push(...e.a, ...e.b);
+  }
+  return out;
+}
+
 export function criarMaquina({ stage, annotations, materiais, globais, acento, gsap }) {
   const { raiz, pecas, coroa } = montar({ materiais, acento });
   const group = new THREE.Group();
@@ -130,7 +171,7 @@ export function criarMaquina({ stage, annotations, materiais, globais, acento, g
     p.matLinha = mLinha;
     for (const m of p.meshes) {
       if (m.isInstancedMesh) continue;
-      const geo = new LineSegmentsGeometry().fromEdgesGeometry(new THREE.EdgesGeometry(m.geometry, 28));
+      const geo = new LineSegmentsGeometry().setPositions(arestas(m.geometry));
       const l = new LineSegments2(geo, mLinha);
       l.position.copy(m.position);
       l.rotation.copy(m.rotation);
@@ -187,8 +228,8 @@ export function criarMaquina({ stage, annotations, materiais, globais, acento, g
     visivel: () => P.cotas * P.presenca,
   });
   annotations.cota({
-    de: ponto(B.x + ra, -0.15, 0.25),
-    ate: ponto(B.x + ra, -0.15, -0.25),
+    de: ponto(B.x - ra, -0.15, -0.25),
+    ate: ponto(B.x - ra, -0.15, 0.25),
     texto: `${Math.round(0.5 * MM)} mm`,
     deslocamento: 4,
     visivel: () => P.cotas * P.presenca,

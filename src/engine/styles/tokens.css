@@ -36,7 +36,7 @@
   --fonte-texto: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
 
   --t-display: calc(var(--u) * 15);
-  --t-titulo: calc(var(--u) * 10.5);
+  --t-titulo: calc(var(--u) * 9.8);
   --t-corpo: calc(var(--u) * 3.4);
   --t-menor: calc(var(--u) * 2.4);
   --t-rotulo: calc(var(--u) * 1.75);

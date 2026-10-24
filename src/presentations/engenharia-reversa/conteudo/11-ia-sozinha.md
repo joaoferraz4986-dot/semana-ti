@@ -2,7 +2,7 @@
 titulo: A IA vai fazer engenharia|reversa sozinha?
 rotulo: 11 · IA vs Humanos
 cena: maquina
-estado: placa-fundo
+estado: digital-meio
 camera: ia
 clima: estudio
 layout: direita

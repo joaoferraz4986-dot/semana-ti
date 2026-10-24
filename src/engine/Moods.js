@@ -31,7 +31,7 @@ export const CLIMAS = {
     chave: 0,
     preench: 0.02,
     recorte: 1.1,
-    spot: 9,
+    spot: 7.5,
     sombra: 0.7,
     contato: 0.85,
     poca: 1,

@@ -77,7 +77,7 @@ function renderFluxo(linha) {
     .join('');
   return `<div class="fluxo${reverso ? ' fluxo--reverso' : ''}" role="group" aria-label="${(rotulo || 'fluxo').replace(/"/g, '')}">${
     rotulo ? `<span class="fluxo__rotulo">${inline(rotulo)}</span>` : ''
-  }${html}</div>`;
+  }<div class="fluxo__itens">${html}</div></div>`;
 }
 
 function renderBotoes(linha) {

@@ -49,10 +49,11 @@
   align-items: end;
 }
 .layout-inferior .capitulo__cabeca {
-  grid-column: 1 / span 6;
+  grid-column: 1 / span 5;
 }
 .layout-inferior .capitulo__corpo {
-  grid-column: 7 / span 6;
+  grid-column: 6 / span 7;
+  gap: calc(var(--u) * 3);
 }
 .layout-topo {
   align-content: start;
@@ -214,12 +215,30 @@
 /* fluxos: "A → B → C" (ou "C ← B ← A", que anima da direita p/ esquerda) */
 .fluxo {
   display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.6);
+  --t-fluxo: calc(var(--u) * 4.4);
+}
+.fluxo__itens {
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: calc(var(--u) * 1.2) calc(var(--u) * 1.4);
+  gap: calc(var(--u) * 0.6) calc(var(--u) * 1.2);
+}
+.fluxo--reverso .fluxo__itens {
+  justify-content: flex-end;
+}
+.layout-inferior .fluxo,
+.layout-topo .fluxo,
+.layout-centro .fluxo {
+  --t-fluxo: calc(var(--u) * 5.2);
+}
+.layout-inferior .fluxo__itens,
+.layout-topo .fluxo__itens,
+.layout-centro .fluxo__itens {
+  flex-wrap: nowrap;
 }
 .fluxo__rotulo {
-  flex-basis: 100%;
   font-size: var(--t-rotulo);
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -227,7 +246,7 @@
 }
 .fluxo__item {
   font-family: var(--fonte-display);
-  font-size: calc(var(--u) * 5.2);
+  font-size: var(--t-fluxo);
   line-height: 1;
   white-space: nowrap;
 }
@@ -242,7 +261,7 @@
 }
 .fluxo__seta {
   position: relative;
-  width: calc(var(--u) * 6);
+  width: calc(var(--u) * 4.2);
   height: 1.5px;
   background: currentColor;
   transform-origin: left center;
@@ -266,11 +285,6 @@
   left: -1px;
   transform: translateY(-50%) rotate(-135deg);
 }
-.layout-centro .fluxo,
-.layout-inferior .fluxo,
-.layout-topo .fluxo {
-  flex-wrap: nowrap;
-}
 
 /* controles (botões) */
 .controles {
@@ -284,7 +298,7 @@
 .prova {
   position: relative;
   max-width: calc(var(--u) * 78);
-  padding: calc(var(--u) * 3.6) calc(var(--u) * 4.2) calc(var(--u) * 3.4);
+  padding: calc(var(--u) * 5.2) calc(var(--u) * 4.2) calc(var(--u) * 3.6);
   background: #f6f3ed;
   color: var(--tinta);
   box-shadow:
@@ -300,7 +314,7 @@
 .prova p + p {
   margin-top: calc(var(--u) * 1.4);
 }
-.prova__manchete {
+.prova .prova__manchete {
   font-family: var(--fonte-display);
   font-size: calc(var(--u) * 5.4) !important;
   line-height: 1 !important;

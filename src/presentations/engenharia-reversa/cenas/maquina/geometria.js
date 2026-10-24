@@ -4,7 +4,7 @@ import { toCreasedNormals, mergeGeometries } from 'three/addons/utils/BufferGeom
 // Geometrias procedurais do redutor. Unidade: 1 = ~22 mm (módulo 0,09 ≙ 2 mm).
 // Convenção: os eixos (shafts) ficam alinhados com Z.
 
-const VINCO = THREE.MathUtils.degToRad(24);
+const VINCO = THREE.MathUtils.degToRad(14);
 
 // normais "vincadas": suaviza curvas, mantém quinas vivas
 export function vincar(geo, ang = VINCO) {

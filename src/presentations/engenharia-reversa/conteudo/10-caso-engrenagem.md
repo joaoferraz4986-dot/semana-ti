@@ -1,5 +1,6 @@
 ---
-titulo: Uma máquina parada.|Nenhum desenho original.
+titulo: Máquina parada,|nenhum desenho|original
+passos-modo: troca
 rotulo: 10 · O caso da engrenagem
 cena: maquina
 estado: engrenagem
@@ -12,10 +13,9 @@ Uma engrenagem quebra e o fabricante não existe mais.
 
 > Caso hipotético, para fins didáticos.
 
-<!-- passo estado=medida camera=engrenagem -->
+<!-- passo estado=medida -->
 Problema → Inspeção → Medição
-
-<!-- passo estado=duvidas camera=engrenagem-caso -->
 Modelo CAD → Fabricação → Validação
 
+<!-- passo estado=duvidas camera=engrenagem-caso -->
 Copiar a forma não basta: material, tolerância e tratamento térmico exigem **julgamento de engenharia**.

@@ -52,7 +52,7 @@ export const CAMERAS = {
   corte: { pos: [3.2, 8.6, 6.4], alvo: [0.15, 1.25, 0], fov: 30 },
   engrenagem: { pos: [3.0, 2.7, 4.8], alvo: [0.67, 1.52, 0], fov: 30 },
   'engrenagem-modelo': { pos: [1.4, 3.4, 5.4], alvo: [0.67, 1.52, 0], fov: 30 },
-  'engrenagem-caso': { pos: [-1.6, 2.9, 5.6], alvo: [0.67, 1.52, 0], fov: 30 },
+  'engrenagem-caso': { pos: [-2.2, 3.2, 6.9], alvo: [0.67, 1.45, 0], fov: 30 },
   traseira: { pos: [-5.6, 3.4, -6.6], alvo: [-0.7, 1.6, -1.0], fov: 30 },
   'traseira-perto': { pos: [-3.4, 2.6, -4.8], alvo: [-0.9, 1.6, -1.3], fov: 30 },
   ia: { pos: [-6.2, 3.8, 8.8], alvo: [-0.2, 1.5, -0.3], fov: 30 },
