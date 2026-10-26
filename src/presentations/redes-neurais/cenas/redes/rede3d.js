@@ -42,7 +42,10 @@ export class Rede3D {
     this.construir(camadas);
   }
 
-  construir(camadas) {
+  construir(camadas, ajustes = {}) {
+    if (ajustes.espacoX != null) this.espacoX = ajustes.espacoX;
+    if (ajustes.espacoY != null) this.espacoY = ajustes.espacoY;
+    if (ajustes.raio != null) this.raio = ajustes.raio;
     this.descartarMalhas();
     this.camadas = camadas;
     const nos = [];

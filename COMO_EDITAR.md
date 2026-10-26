@@ -124,6 +124,8 @@ Por padrão, o texto dos passos **soma** (o anterior continua na tela). Para cad
 | `estado` | o que o 3D mostra (lista abaixo) |
 | `camera` | de onde se vê (lista abaixo) |
 
+**Tema claro/escuro (tecla `D`).** O apresentador pode apertar **`D`** a qualquer momento, e o palco inteiro troca entre claro e escuro (a escolha fica salva no navegador). É implementado em `Moods.js` (`CLIMAS['estudio-escuro']` + `setTema`): o tema escuro se mistura com o clima do capítulo, então nenhum `.md` precisa declarar nada.
+
 **Estados** (`cenas/software/estados.js`):
 - executável: `selado`, `selado-rotulo`, `fonte`, `compilado`, `volta`, `volta-pistas`, `fatia-1` … `fatia-4`, `pistas`;
 - app: `celular-apagado`, `celular-ligado`, `celular-duvida`, `camada-1` … `camada-5`, `camadas-todas`;
@@ -302,7 +304,7 @@ demo-neuronios: 2
 | Atributo | Valores |
 | --- | --- |
 | `demo-dados` | `espiral`, `circulos`, `xor`, `grupos` · vários separados por vírgula = montagem (ex.: `circulos,xor`) |
-| `demo-ocultas` | camadas ocultas, de 1 a 3 |
+| `demo-ocultas` | camadas ocultas, de 1 a 12 (a faixa alta existe para mostrar que fundo demais, sem técnica, encalha) |
 | `demo-neuronios` | neurônios por camada oculta, de 1 a 8 |
 | `demo-taxa` | taxa de aprendizado (padrão 0,03) |
 | `demo-epocas` | até quantas épocas treinar (padrão 400) |

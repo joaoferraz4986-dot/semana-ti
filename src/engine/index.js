@@ -137,6 +137,15 @@ export function iniciarApresentacao(config) {
   const progresso = new Progress(body, capitulos);
   const ajuda = new Help(body, config.titulo || 'Apresentação');
 
+  // ---------- tema claro/escuro (tecla D) ----------
+  const aplicarTema = (escuro, { aviso = false } = {}) => {
+    document.documentElement.classList.toggle('tema-escuro', escuro);
+    moods.setTema(escuro, { imediato: true });
+    gravar('tema', escuro ? 'escuro' : 'claro');
+    if (aviso) toast.mostrar(escuro ? 'Tema escuro' : 'Tema claro');
+  };
+  aplicarTema(ler('tema', 'claro') === 'escuro');
+
   let ultimoHash = '';
   nav = new Navigation({
     total: paradas.length,
@@ -174,6 +183,7 @@ export function iniciarApresentacao(config) {
       trocarQualidade(ORDEM_QUALIDADE[(i + 1) % ORDEM_QUALIDADE.length]);
       fps.quedas = 99; // escolha manual: desliga o ajuste automático
     },
+    d: () => aplicarTema(ler('tema', 'claro') !== 'escuro', { aviso: true }),
     h: () => ajuda.alternar(),
     r: () => {
       director.resetarParallax();

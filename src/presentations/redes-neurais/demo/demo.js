@@ -7,7 +7,7 @@ import { gerarDados, NOMES } from './dados.js';
 //
 // Atributos aceitos no .md (no cabeçalho ou em <!-- passo ... -->):
 //   demo-dados=espiral            espiral | circulos | xor | grupos  (vários separados por vírgula = montagem)
-//   demo-ocultas=1                número de camadas ocultas (1 a 3)
+//   demo-ocultas=1                número de camadas ocultas (1 a 12) — mais camadas não é melhor (o capítulo mostra)
 //   demo-neuronios=2              neurônios por camada oculta (1 a 8)
 //   demo-taxa=0.03                taxa de aprendizado
 //   demo-epocas=400               até quantas épocas treinar
@@ -31,7 +31,7 @@ export function lerConfig(attrs = {}) {
       .split(',')
       .map((s) => s.trim())
       .filter((s) => NOMES[s]),
-    ocultas: Math.max(1, Math.min(3, num('demo-ocultas', 1))),
+    ocultas: Math.max(1, Math.min(12, num('demo-ocultas', 1))),
     neuronios: Math.max(1, Math.min(8, num('demo-neuronios', 2))),
     taxa: num('demo-taxa', 0.03),
     epocas: num('demo-epocas', 400),

@@ -1,8 +1,7 @@
 // Uma rede neural de verdade, pequena, em JavaScript puro (sem bibliotecas).
 // É um MLP ("perceptron de múltiplas camadas"):
-//   2 entradas (x, y do ponto) → 1 a 3 camadas ocultas → 1 saída (probabilidade de ser "azul").
+//   2 entradas (x, y do ponto) → 1 a 12 camadas ocultas → 1 saída (probabilidade de ser "azul").
 // Aprende com descida do gradiente em mini-lotes (SGD com momento) e retropropagação.
-
 // Gerador de números pseudoaleatórios com semente (mulberry32).
 // Mesma semente = mesmos números = a demo se comporta igual toda vez.
 export function aleatorio(semente = 1) {
@@ -17,18 +16,24 @@ export function aleatorio(semente = 1) {
 }
 
 const sigmoide = (z) => 1 / (1 + Math.exp(-z));
+// Tanh (padrão da demo) vs ReLU vazada. Em redes fundas (8+ camadas) a tanh
+// satura, o gradiente morre no caminho de volta e a rede para de aprender.
+const relu = (z) => (z > 0 ? z : z * 0.01);
+const derivada = { tanh: (a) => 1 - a * a, relu: (a) => (a > 0 ? 1 : 0.01) };
 
 export class MLP {
   /**
    * @param {number[]} tamanhos ex.: [2, 8, 8, 1]
-   * @param {object} op { semente, taxa (taxa de aprendizado), momento }
+   * @param {object} op { semente, taxa (taxa de aprendizado), momento, ativ ('tanh' | 'relu') }
    */
-  constructor(tamanhos, { semente = 1, taxa = 0.05, momento = 0.9, escala = 2 } = {}) {
+  constructor(tamanhos, { semente = 1, taxa = 0.05, momento = 0.9, escala = 2, ativ = 'tanh' } = {}) {
     this.tamanhos = tamanhos;
-    this.escala = escala; // as entradas (entre -1 e 1) são multiplicadas por isto: ajuda a tanh a desenhar curvas
+    this.escala = escala; // as entradas (entre -1 e 1) são multiplicadas por isto: ajuda a desenhar curvas
     this.taxa = taxa;
     this.momento = momento;
+    this.derivAtiv = derivada[ativ] ?? derivada.tanh; // derivada em função da saída ativa
     const rnd = aleatorio(semente);
+    this.ativFn = ativ === 'relu' ? relu : Math.tanh; // ativação das camadas ocultas
     this.W = []; // pesos: W[l][j * entradas + i] liga o neurônio i (camada l) ao j (camada l+1)
     this.b = []; // vieses (bias)
     this.vW = []; // "velocidade" do momento
@@ -36,7 +41,7 @@ export class MLP {
     for (let l = 0; l < tamanhos.length - 1; l++) {
       const nIn = tamanhos[l];
       const nOut = tamanhos[l + 1];
-      const lim = Math.sqrt(6 / (nIn + nOut)); // inicialização de Xavier
+      const lim = Math.sqrt(6 / (nIn + nOut)) * (ativ === 'relu' ? 2 * Math.sqrt(2) : 1); // Xavier p/ tanh, He p/ relu
       const w = new Float64Array(nIn * nOut);
       for (let k = 0; k < w.length; k++) w[k] = (rnd() * 2 - 1) * lim;
       this.W.push(w);
@@ -65,7 +70,7 @@ export class MLP {
         let z = this.b[l][j]; // soma ponderada: Σ (peso × entrada) + viés
         for (let i = 0; i < nIn; i++) z += w[j * nIn + i] * a[l][i];
         // ativação: tanh nas ocultas, sigmoide na saída
-        a[l + 1][j] = l === L - 1 ? sigmoide(z) : Math.tanh(z);
+        a[l + 1][j] = l === L - 1 ? sigmoide(z) : this.ativFn(z);
       }
     }
     return a[L][0];
@@ -99,7 +104,7 @@ export class MLP {
             let s = 0;
             for (let j = 0; j < nOut; j++) s += w[j * nIn + i] * this.d[l + 1][j];
             const ai = this.a[l][i];
-            this.d[l][i] = s * (1 - ai * ai); // derivada da tanh
+            this.d[l][i] = s * this.derivAtiv(ai); // derivada da ativação
           }
         }
       }

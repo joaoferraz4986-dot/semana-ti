@@ -1,6 +1,6 @@
 ---
 titulo: A máquina aprende com exemplos.|Nós escolhemos quais exemplos dar.
-rotulo: 11 · Final
+rotulo: 12 · Final
 estado: final-unido
 camera: final-holofote
 clima: holofote

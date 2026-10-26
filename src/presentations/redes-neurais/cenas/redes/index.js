@@ -54,6 +54,19 @@ export function criarRedes({ stage, annotations, materiais }) {
   group.add(redeDemo.group);
   let topologia = '2,2,1';
 
+  function ajustarDemo(tamanhos) {
+    // redes fundas (8+ camadas) ficam estreitas pra caber no quadro;
+    // redes com 8 neurônios por camada achatam um pouco de altura
+    const L = tamanhos.length;
+    const n = Math.max(...tamanhos);
+    const funda = L > 4;
+    const espacoX = funda ? Math.min(0.75, 3.4 / (L - 1)) : 0.75;
+    const espacoY = L > 4 && n >= 6 ? Math.min(0.42, 2.1 / (n - 1)) : 0.42;
+    redeDemo.construir(tamanhos, { espacoX, espacoY, raio: L > 4 && n >= 6 ? 0.1 : 0.12 });
+    // rede funda: afasta um pouco do painel à esquerda
+    redeDemo.group.position.x = POSICOES.demo + (funda ? 1.15 : 0);
+  }
+
   function onStop(p) {
     const temDemo = p?.attrs && p.attrs['demo-dados'] != null && p.cena === 'redes';
     if (temDemo) {
@@ -61,7 +74,7 @@ export function criarRedes({ stage, annotations, materiais }) {
       const tamanhos = [2, ...Array(cfg.ocultas).fill(cfg.neuronios), 1];
       const chave = tamanhos.join(',');
       if (chave !== topologia) {
-        redeDemo.construir(tamanhos);
+        ajustarDemo(tamanhos);
         topologia = chave;
       }
       demo.iniciar(cfg); // sempre recomeça do zero, com a mesma semente

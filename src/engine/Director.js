@@ -146,7 +146,7 @@ export class Director {
 
     // --- clima
     const clima = THREE.MathUtils.lerp(A.clima, B.clima, suave(fr));
-    this.moods.aplicar(clima, this.intro);
+    this.moods.aplicar(clima, this.intro, dt);
     this.clima = clima;
 
     // --- cenas

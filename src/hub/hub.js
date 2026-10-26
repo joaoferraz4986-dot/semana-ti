@@ -3,6 +3,23 @@ import '../engine/styles/base.css';
 import './hub.css';
 import lista from './apresentacoes.js';
 
+// Tema claro/escuro: mesma tecla (D) que a das apresentações, mesma memória
+const ler = (k, padrao) => {
+  try {
+    return localStorage.getItem(k) ?? padrao;
+  } catch {
+    return padrao;
+  }
+};
+const gravar = (k, v) => {
+  try {
+    localStorage.setItem(k, v);
+  } catch {
+    /* modo privado: ignora */
+  }
+};
+document.documentElement.classList.toggle('tema-escuro', ler('tema', 'claro') === 'escuro');
+
 const ul = document.querySelector('.hub__lista');
 ul.innerHTML = lista
   .map((a, i) => {
@@ -21,6 +38,12 @@ links[0]?.focus();
 window.addEventListener('keydown', (e) => {
   const n = Number(e.key);
   if (n >= 1 && n <= lista.length && lista[n - 1].pronta) location.href = `./${lista[n - 1].pasta}/`;
+  // D troca o tema claro/escuro (mesmo atalho das apresentações)
+  if (e.key.toLowerCase() === 'd') {
+    const escuro = ler('tema', 'claro') !== 'escuro';
+    document.documentElement.classList.toggle('tema-escuro', escuro);
+    gravar('tema', escuro ? 'escuro' : 'claro');
+  }
   const i = links.indexOf(document.activeElement);
   if (['ArrowDown', 'ArrowRight', 'PageDown'].includes(e.key)) {
     e.preventDefault();

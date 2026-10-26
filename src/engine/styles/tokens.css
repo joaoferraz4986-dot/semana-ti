@@ -63,3 +63,17 @@
     --margem-x: 16px;
   }
 }
+
+/*
+  TEMA ESCURO — tecla D dentro da apresentação (salva no navegador).
+  Na apresentação, quem manda nas cores é o Moods.js; aqui o bloco cobre
+  o primeiro instante da página e a página inicial (hub), que não tem 3D.
+  Cartões de papel (provas, demo, ajuda) continuam claros de propósito:
+  são "folhas impressas" e dessa forma legíveis nos dois temas.
+*/
+html.tema-escuro {
+  --fundo: #1a1815;
+  --texto: #eae4d9;
+  --texto-2: #a79d8e;
+  --traco: #eae4d9;
+}

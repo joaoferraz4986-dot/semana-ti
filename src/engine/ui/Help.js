@@ -5,6 +5,7 @@ const ATALHOS = [
   ['Home / End', 'Início / fim'],
   ['F', 'Tela cheia'],
   ['Q', 'Qualidade gráfica (Alta, Média, Baixa)'],
+  ['D', 'Tema escuro ou claro'],
   ['R', 'Recentralizar a câmera'],
   ['H', 'Mostrar ou esconder esta ajuda'],
   ['Esc', 'Fechar esta ajuda'],

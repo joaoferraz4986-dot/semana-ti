@@ -6,10 +6,10 @@ Apresentações 3D animadas, em português, feitas para rodar numa TV grande, **
 
 | Apresentação | Link direto | O que tem |
 | --- | --- | --- |
-| **Engenharia reversa** (de software) | [abrir](https://sousa7tz.github.io/semana-ti/engenharia-reversa/) | 11 capítulos, 47 paradas, ~19 min |
-| **Redes neurais** | [abrir](https://sousa7tz.github.io/semana-ti/redes-neurais/) | 11 capítulos, 47 paradas, ~19 min, com uma **rede neural de verdade treinando ao vivo** no capítulo 6 |
+| **Engenharia reversa** (de software) | [abrir](https://sousa7tz.github.io/semana-ti/engenharia-reversa/) | 11 capítulos, 48 paradas, ~21 min |
+| **Redes neurais** | [abrir](https://sousa7tz.github.io/semana-ti/redes-neurais/) | 12 capítulos, 57 paradas, ~23 min, com uma **rede neural de verdade treinando ao vivo** no capítulo 6 |
 
-Use as setas do teclado (ou o passador de slides) para avançar. Aperte `H` para ver os atalhos. Funciona melhor no computador (Chrome ou Edge).
+Use as setas do teclado (ou o passador de slides) para avançar. Aperte `D` para trocar entre tema claro e escuro do palco. Aperte `H` para ver os atalhos. Funciona melhor no computador (Chrome ou Edge).
 
 Tudo roda no navegador. O 3D é feito com Three.js, as animações com GSAP e a rolagem suave com Lenis. Não depende de nenhum site externo: fontes e bibliotecas vão junto no build.
 
@@ -108,6 +108,7 @@ Dica: aperte `F` para tela cheia e confira o som e o brilho da TV antes de come�
 | `Home` / `End` | início / fim |
 | `F` | tela cheia |
 | `Q` | qualidade gráfica: Alta → Média → Baixa |
+| `D` | tema claro/escuro do palco (a escolha fica salva no navegador) |
 | `R` | recentraliza a câmera |
 | `H` | mostra os atalhos |
 | `Esc` | fecha a ajuda |

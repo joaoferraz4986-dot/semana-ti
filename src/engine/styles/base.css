@@ -256,7 +256,7 @@ kbd {
 .sem-webgl .palco svg {
   width: min(52vw, 90vh);
   height: auto;
-  color: var(--tinta);
+  color: var(--texto);
 }
 
 .so-leitor {

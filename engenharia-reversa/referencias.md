@@ -42,6 +42,11 @@ A apresentação **não** afirma que engenharia reversa é sempre legal ou sempr
 
 *Isto não é orientação jurídica.*
 
+## A passada final (capítulo 11)
+
+- A frase sobre a sala das redes neurais — "a máquina também aprende do exemplo de fora e projeta seu modelo como resposta" — é uma **analogia** que amarra as duas apresentações. As fontes dela estão em `redes-neurais/referencias.md`, seção "Projeção e NCM" (VELMANS, 2018; PEREIRA JR., 2018; arXiv:2610.14162). Não é afirmação de neurociência: é o espelho do que a sala anterior mostrou.
+- A definição de engenharia reversa usada no fecho permanece a de Chikofsky & Cross (1990), citada em "Conceitos".
+
 ## Exemplos fictícios
 
 - O app "Lanchonete Pátio", a API, os endereços, o JSON e o número do pedido são **inventados** para o caso hipotético do capítulo 7. Não representam nenhuma empresa real.

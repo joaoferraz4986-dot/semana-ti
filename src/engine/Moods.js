@@ -2,6 +2,10 @@ import * as THREE from 'three';
 
 // Climas de luz. Cada clima é um conjunto de números/cores;
 // a transição é uma interpolação contínua (0 = estúdio, 1 = holofote).
+//
+// O TEMA ESCURO (tecla D) troca o estúdio claro por um "estúdio noturno":
+// mesmos objetos, mesmo desenho, luz baixa e fundo escuro. Não é o holofote
+// (que tem foco de museu): aqui a sala toda fica meno e as peças seguem visíveis.
 
 export const CLIMAS = {
   estudio: {
@@ -20,6 +24,24 @@ export const CLIMAS = {
     grao: 0,
     neblinaPerto: 18,
     neblinaLonge: 48,
+    exposicao: 1,
+  },
+  'estudio-escuro': {
+    fundo: '#1a1815',
+    texto: '#eae4d9',
+    texto2: '#a79d8e',
+    traco: '#eae4d9',
+    ambiente: 0.42,
+    chave: 1.0,
+    preench: 0.24,
+    recorte: 0.62,
+    spot: 2.6,
+    sombra: 0.5,
+    contato: 0.62,
+    poca: 0.4,
+    grao: 0.07,
+    neblinaPerto: 13,
+    neblinaLonge: 40,
     exposicao: 1,
   },
   holofote: {
@@ -48,32 +70,47 @@ export class Moods {
   constructor(stage, overrides = {}) {
     this.stage = stage;
     this.a = { ...CLIMAS.estudio, ...(overrides.estudio || {}) };
+    this.aE = { ...CLIMAS['estudio-escuro'], ...(overrides['estudio-escuro'] || {}) }; // tema escuro
     this.b = { ...CLIMAS.holofote, ...(overrides.holofote || {}) };
     this.cores = {};
     for (const k of ['fundo', 'texto', 'texto2', 'traco']) {
-      this.cores[k] = [new THREE.Color(this.a[k]), new THREE.Color(this.b[k])];
+      // [claro, claro-escuro (tema), holofote] — três pontos que o clima escolhe
+      this.cores[k] = [new THREE.Color(this.a[k]), new THREE.Color(this.aE[k]), new THREE.Color(this.b[k])];
     }
     this.tmp = new THREE.Color();
+    this.tmp2 = new THREE.Color();
     this.ultimo = -1;
+    this.tema = 0; // 0 = claro · 1 = tema escuro (tecla D); entra com transição suave
+    this.temaAlvo = 0;
     this.root = document.documentElement.style;
   }
 
+  // Troca o tema (atalho D). imediato: pula a transição (ex.: ao abrir a página).
+  setTema(escuro, { imediato = false } = {}) {
+    this.temaAlvo = escuro ? 1 : 0;
+    if (imediato) this.tema = this.temaAlvo;
+  }
+
   // w: 0..1 (estúdio → holofote); luz: multiplicador da abertura (0 = escuro total)
-  aplicar(w, luz = 1) {
-    const chaveCache = Math.round(w * 1000) + Math.round(luz * 1000) * 10000;
+  aplicar(w, luz = 1, dt = 1 / 60) {
+    // o tema escuro entra devagar: o mesmo passo de suavização das câmeras
+    if (this.tema !== this.temaAlvo) {
+      this.tema += (this.temaAlvo - this.tema) * (1 - Math.exp(-dt * 3));
+      if (Math.abs(this.temaAlvo - this.tema) < 0.002) this.tema = this.temaAlvo;
+    }
+    const chaveCache = Math.round(w * 1000) + Math.round(luz * 1000) * 10000 + Math.round(this.tema * 500) * 10000000;
     const mudou = chaveCache !== this.ultimo;
     this.ultimo = chaveCache;
     if (!mudou) return;
-    const { a, b } = this;
-    const v = (k) => lerp(a[k], b[k], w);
+    const { a, aE, b } = this;
+    const t = this.tema;
+    // primeiro mistura claro ↔ tema escuro dentro do mesmo clima; o clima (w) decide o resto
+    const v = (k) => lerp(lerp(a[k], aE[k], t), b[k], w);
+    const corDe = (k, out) => out.copy(this.cores[k][0]).lerp(this.cores[k][1], t).lerp(this.cores[k][2], w);
 
-    // CSS: cores do texto/fundo seguem o clima
+    // CSS: cores do texto/fundo seguem o clima (e o tema)
     const css = {};
-    for (const k in this.cores) {
-      const [ca, cb] = this.cores[k];
-      this.tmp.copy(ca).lerp(cb, w);
-      css[k] = '#' + this.tmp.getHexString();
-    }
+    for (const k in this.cores) css[k] = '#' + corDe(k, this.tmp).getHexString();
     this.root.setProperty('--fundo', css.fundo);
     this.root.setProperty('--texto', css.texto);
     this.root.setProperty('--texto-2', css.texto2);
@@ -83,7 +120,7 @@ export class Moods {
 
     const st = this.stage;
     if (!st) return;
-    const fundo = this.tmp.copy(this.cores.fundo[0]).lerp(this.cores.fundo[1], w);
+    const fundo = corDe('fundo', this.tmp2); // a cor do céu que o fog e o clear color usam
     st.renderer.setClearColor(fundo, 1);
     st.scene.fog.color.copy(fundo);
     st.scene.fog.near = v('neblinaPerto');
